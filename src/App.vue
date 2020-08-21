@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-	<router-view></router-view>
+	<router-view v-if="isRouterAlive"></router-view>
 </div>
 </template>
 
@@ -10,9 +10,15 @@ import * as types from '@/store/mutationTypes.js';
 import ChangeTheme from './libs/ChangeTheme';//'../libs/ChangeTheme';
 export default {
 	name: 'App',
+	provide(){
+		return{
+			reload:this.reload
+		}
+	},
 	data(){
 		return {
-			documentLoaded:false
+			documentLoaded:false,
+			isRouterAlive:true
 		}
 	},
 	computed:{
@@ -30,9 +36,15 @@ export default {
 	created(){
 		window.addEventListener('load',this.onloadHandler);
 		this.initConfig(window.AppConfig);
+		if (sessionStorage.getItem("store") ) {
+        this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+		};
+		window.addEventListener("beforeunload",()=>{
+        sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    	}) 
 	},
 	mounted(){
-		
+		window.addEventListener('unload', this.saveState)
 	},
 	methods:{
 		...mapMutations({
@@ -48,6 +60,15 @@ export default {
 			})
 			// ChangeTheme.changeTheme(this.config.themeColor);
 			window.ChangeTheme = ChangeTheme;
+		},
+		saveState() {
+                sessionStorage.setItem('state', JSON.stringify(this.$store.state))
+		},
+		reload(){
+			this.isRouterAlive=false
+			this.$nextTick(function(){
+				this.isRouterAlive=true
+			})
 		}
 	}
 }
@@ -68,7 +89,7 @@ html,body{
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	/* text-align: center; */
-	color: #2c3e50;
+	
 	/* margin-top: 60px; */
 	width: 100%;
 	height: 100%;
@@ -103,4 +124,46 @@ html,body{
 		border: 1px solid #ededed;
 	}
 }
+.page-edit{
+	min-width: 1365px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.switchon .el-switch__core{
+    height: 30px;
+	border-radius: 50px;
+	padding: 5px;
+	
+}
+.switchon .el-switch__core::after{
+	width: 20px;
+    height: 20px;
+	margin-top: 3px;
+	margin-left: 2px;
+	
+	
+}
+.el-switch.is-checked .el-switch__core::after {
+    left: 100%;
+    margin-left: -23px;
+}
+.choose .el-radio__label{
+	font-size: 18px;
+	
+}
+.el-radio__input.is-checked .el-radio__inner {
+    border-color:rgba(0, 121, 254, 1);
+    background: rgba(0, 121, 254, 1);
+
+	
+}
+.el-radio__input.is-checked+.el-radio__label{
+	color: rgba(0, 121, 254, 1);
+	
+}
+.el-radio__inner:hover{
+	border: 1px solid rgba(0, 121, 254, 1);
+}
+
 </style>

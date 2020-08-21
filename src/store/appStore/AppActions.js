@@ -40,16 +40,32 @@ export default {
     },
     connectSocket({commit,state}){
         
-        // const onmessage = (event) => {
-        //     console.log('ws message',event)
-        //     if(event.data != 'pong'){
-        //         let msg = JSON.parse(event.data);
-        //         if(msg.type == 'taskStatus'){
-        //             commit(types.TASK_LIST_MSG,JSON.parse(msg.message));
-        //         }
-        //     }
-        // }
-        // const mySocket = new MySocket('/appsocket/ws',onmessage);
-        // mySocket.connect();
-    }
+        
+    },
+    app_loadTitleTailList({commit}){
+        Action.getJsonData(Interface.titleTailList+global.search,{}).then( data =>{
+            // console.log('dataTL_LOADTEMPLATE_TT',data)
+            commit(types.TL_LOADTEMPLATE_TT,data.returnData);
+        }).catch( err =>{
+            console.log('模板例表加载错误',err)
+        })
+    },
+    app_saveTitleTail({commit},params){
+        return Action.postFormData(Interface.titleTailSave+global.search,params);
+        console.log('tl_saveTitleTail',params,callback)
+       
+    },
+    app_delTitleTail({commit},params){
+        Action.postFormData(Interface.titleTailDel+global.search,params).then( data =>{
+            // console.log('tl_delTitleTail',data)
+            this.dispatch('tl_loadTitleTailList');
+            // commit(types.TL_LOADTEMPLATE_TT,data);
+        }).catch( err =>{
+            console.log('模板例表加载错误',err)
+        })
+    },
+    app_topTitleTail({commit},params){
+        return Action.getJsonData(Interface.titleTailTop+global.search,params)
+    },
+
 }

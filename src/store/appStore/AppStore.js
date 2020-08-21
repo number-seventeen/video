@@ -6,7 +6,10 @@ const state = {
     config:{
         themeColor:'#409EFF',
     },
+    curSelects:[],
+    tlListTT:[],
     currentMedia:null,//当前编辑的素材信息
+   
 }
 
 const getters = {

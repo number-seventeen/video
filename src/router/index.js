@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/login/Login.vue';
 import PageSource from '../views/source/PageSource.vue';
 import PageEdit from '../views/edit/PageEdit.vue';
+import Playprograss from '../views/edit/Playprograss.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -24,12 +25,28 @@ const routes = [
 		name: 'source',
 		component: PageSource,
 		// redirect:'/login',
-	},{
+	},
+	{
 		path: '/edit',
 		name: 'edit',
 		component: PageEdit,
 		// redirect:'/login',
-	}
+		chridern:[
+			{
+				
+				path:'playprograss',
+				component:Playprograss
+			},
+						
+			
+			
+		]
+	},
+		
+	
+	
+	
+
 ]
 
 const router = new VueRouter({

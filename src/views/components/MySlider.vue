@@ -22,6 +22,7 @@ export default {
         //     default:0
         // }
     },
+    
     data(){
         return {
             sliderValue:0,
@@ -38,12 +39,18 @@ export default {
 	        deep: true,
             handler:function (newVal,oldVal){
                 this.sliderValue = newVal;
+                
+                 
+                
             }
         }
     },
     methods:{
         setValue(v){
             this.sliderValue = Math.min(1,Math.max(0,v));
+        },
+        tt(){
+           
         },
         mousedownHandler(event){
             let e = event ? event : window.event;
@@ -58,6 +65,8 @@ export default {
             let recordX = event.clientX;
             let record = this.currentTime;
             
+            
+            
             document.addEventListener("mousemove",bodymousemove);
             document.addEventListener("mouseup",bodymouseup);
 
@@ -69,6 +78,7 @@ export default {
                 event.stopPropagation();
 
                 let willX = event.clientX-mouseX;//+recodeX;
+                console.log(willX)
                 self.sliderValue = Math.min(1,Math.max(0,willX/rootW));
                 self.$emit('value_change',self.sliderValue)
             }
@@ -78,7 +88,6 @@ export default {
                 event.stopPropagation();
                 document.removeEventListener("mousemove",bodymousemove);
                 document.removeEventListener("mouseup",bodymouseup);
-                
                 self.isMouseDown = false;
             }
         }

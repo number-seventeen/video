@@ -37,7 +37,7 @@ export default {
     data(){
         return {
             dialogVisible:false,
-            enabledType:'all,video,audio,image',
+            enabledType:'video',
             enabledRadio:false,
             callback:null,
             promptText:''
@@ -49,6 +49,7 @@ export default {
             this.enabledType = options.enabledType;
             this.enabledRadio = !!options.enabledRadio;
             this.promptText = options.promptText || '';
+            console.log()
             if(options.isClearChecked && this.$refs.sourceSelect){
                 this.$refs.sourceSelect.clearChecked();
             }
@@ -77,6 +78,7 @@ export default {
             const arr = this.$refs.sourceSelect.getSelectSource();
             if(this.callback && arr.length > 0){
                 this.callback(arr);
+                
             }
         }
     }

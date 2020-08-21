@@ -13,6 +13,7 @@
                     <svg class="icon svg-icon" aria-hidden="true">
                         <use xlink:href="#iconbofang"></use>
                     </svg>
+                    
                 </div>
                 <div class="cb-btn btn-pause" v-if="!isPause" @click="pauseHandler">
                     <svg class="icon svg-icon" aria-hidden="true">
@@ -64,6 +65,41 @@ export default {
         controlStatus:{
             type:String,
             default:'easy'
+        },
+        all:{
+            required:true
+        },
+        pvalue:{
+            required:true
+        },
+        ptailvalue:{
+            required:true
+        },
+        twocu:{
+             required:true
+        },
+        threecu:{
+             required:true
+        },
+        maincutime:{
+            required:true   
+        },
+        headcutime:{
+            required:true
+        },
+        tailcutime:{
+            required:true
+        }
+        
+
+    },
+    watch:{
+        currentTime:{
+            handler:function(){
+                if(this.signal=="ischange"){
+                    this.mplay()
+                }
+            }
         }
     },
     data(){
@@ -79,7 +115,9 @@ export default {
             progressValue:0,//0-1
         }
     },
+    
     computed:{
+        
         volumeStatus(){
             if(this.volume === 0) return 'level0';
             if(this.volume <= 0.2) return 'level1';
@@ -88,15 +126,28 @@ export default {
         },
         curTimeStr(){
             return Utils.getFormatHMS(this.currentTime*1000);
+            
         },
         durTimeStr(){
             return Utils.getFormatHMS(this.duration*1000);
+            
         }
     },
     methods:{
         setCurrentTime(v){
-            this.currentTime = v;
-            this.progressValue = this.duration == 0?0:(v/this.duration);
+            this.currentTime=v
+            console.log("nn",this.currentTime)
+            this.progressValue = this.duration == 0?0:(this.currentTime/this.duration);
+            this.$emit('vplayvalue',this.progressValue)
+            this.$emit('vcurrenttime',v)
+            this.$emit('current',this.currentTime)
+            
+        
+        },
+        mplay(){
+            // this.twocu=this.maincutime+this.headcutime+this.tailcutime
+            // this.setCurrentTime(this.twocu)
+            // console.log("hao")
         },
         setDuration(v){
             this.duration = v;
@@ -119,6 +170,7 @@ export default {
         },
         playHandler(){
             this.$emit('play');
+            
         },
         pauseHandler(){
             this.$emit('pause');

@@ -10,7 +10,7 @@
                 <AmSourceSelect 
                 ref="sourceSelect"
                 :enabledType="enabledType"
-                :enabledRadio="enabledRadio"
+                :enabledCheckBox="enabledCheckBox"
                 :propPageSize="60"
                 @flushList="flushListHandler"/>
             </div>
@@ -40,7 +40,7 @@ export default {
     data(){
         return {
             enabledType:'video',
-            enabledRadio:true,
+            enabledCheckBox:true,
         }
     },
     created(){
@@ -49,13 +49,13 @@ export default {
     },
     methods:{
         ...mapMutations({
-			setCurrentMedia: types.SET_CURRENT_MEDIA,
+			setCurrentMedias: types.SET_CURRENT_MEDIAS,
 		}),
         selectedHandler(){
             const arr = this.$refs.sourceSelect.getSelectSource();
             if(arr.length > 0){
                 let media = arr[0];
-                this.setCurrentMedia(media);
+                this.setCurrentMedias(arr);
                 this.$router.push({name:'edit',query:global.params});
             }else{
                 this.$message({

@@ -1,0 +1,75 @@
+
+.bar{
+	width:500px;
+    height:10px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.bar .progressbar{
+	width: 500px;
+	height:10px;
+	background-color:rgba(215, 215, 215, 1);
+	
+	border-radius:30px;
+	position: relative;
+}
+.bar .greenbar {
+	width: 0%;
+	height:10px;
+	border-radius:30px ;
+	border-right: 10px solid rgba(0, 121, 254, 1);
+	background-color: rgba(64, 158, 255, 1);;
+}
+
+
+.button_menu {
+    width: 150px;
+    height: 50px;
+                    
+}
+
+.el-button{
+    width: 50px;
+    height: 49px;
+    background:rgba(242, 242, 242, 1);
+    color:darkgrey;
+    font-size: 23px;
+    border-color: rgba(242, 242, 242, 1);
+}
+.el-button:hover{
+    background: rgba(64, 158, 255, 1);
+    border: rgba(64, 158, 255, 1);
+    color: white;
+} 
+.el-button+.el-button {
+    margin-left: 0px; 
+}
+.vs{
+    width: 827px;
+    height: 460px;
+    object-fit: fill;
+}
+.v-control{
+    margin-top: 10px;
+    display: flex;
+}
+.v-control p{
+    margin-top: 0;
+    padding-top:0;
+    font-size: 13px;
+    font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+    font-weight: 700;
+    font-style: normal;
+    
+}
+.pro{
+    width: 620px;
+    height: 50px;
+    line-height: 50px;
+    display: flex;
+    margin-left:20px;
+    
+   
+    
+}
