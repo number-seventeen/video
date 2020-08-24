@@ -5,7 +5,8 @@
             <video ref="headVideo" class="default-video head" 
             :src="headvideos"
             @loadedmetadata="loadedmetadataHandler"
-            
+            @canplaythrough="canplaythroughHandler"
+            @error="errorHandler"
             @play="playHandler"
             @playing="playingHandler"
             @waiting="waitingHandler"
@@ -21,6 +22,8 @@
             <video ref="mainVideo" class="default-video main "
             :src="videourl"
             @loadedmetadata="loadedmetadataHandler"
+            @canplaythrough="canplaythroughHandler"
+            @error="errorHandler"
             @play="playHandler"
             @playing="playingHandler"
             @waiting="waitingHandler"
@@ -47,6 +50,8 @@
             <video ref="tailVideo" class="default-video tail"
             :src="tailvideos"
             @loadedmetadata="loadedmetadataHandler"
+            @canplaythrough="canplaythroughHandler"
+            @error="errorHandler"
             @play="playHandler"
             @playing="playingHandler"
             @waiting="waitingHandler"
@@ -116,9 +121,6 @@ export default {
         },
         gozimu:{
             required:true
-        },
-        su:{
-            required:true
         } 
         
 
@@ -152,6 +154,9 @@ export default {
             mainp:0,
             timer:null,
             whichpaly:""
+
+           
+            
 
             
         }
@@ -198,13 +203,16 @@ export default {
                 }
             } 
         },
-        su:{
+        maincutime:{
             immediate:true,
             handler:function(){
-                this.sumargin()
-            }   
+                if(this.signal=="ischange"){
+                    this.maingo()
+                }
+            }
+
+
         }
-       
         
     },
     
@@ -225,13 +233,13 @@ export default {
         
     },
     methods:{
-        sumargin(){
-           
-        },
         play(){
             if(!this.video){
                 this.$nextTick(()=>{
-                    this.video.play()  
+                    this.video.play()
+                    
+                 
+                    
                 })
                 return;
             }
@@ -285,6 +293,12 @@ export default {
                    this.$refs.mediaControl.setDuration(this.video.duration)
                 }
         },
+        canplaythroughHandler(){
+            //  this.isPause = false;
+        },
+        errorHandler(){
+            this.isPause = true;
+        },
         playHandler(){
             this.isPause = false;
             if ((this.gozimu==true)||(this.simplezimu=="nochange"&&this.gozimu==true)) {   
@@ -333,7 +347,8 @@ export default {
             this.video.currentTime = v;
         },
         mouseoverHandler(){
-            this.controlStatus = 'all';    
+            this.controlStatus = 'all';
+            
             
         },
         mouseoutHandler(){
@@ -358,7 +373,7 @@ export default {
         },
         getcurrenttime(ctime){
             this.cu=ctime
-            
+            console.log("uu",this.maincutime)
             this.maincutime=document.getElementsByClassName("main")[0].currentTime
             this.maincutime=this.maincutime
             this.mas=this.maincutime
@@ -376,13 +391,15 @@ export default {
                     this.$refs.mediaControl.setCurrentTime(this.threecu)
                 }
                 else if(this.twocu>=this.headtime&&this.twocu<(this.maintime+this.headtime)){
+                    console.log("m")
                     this.nozimu=true
                     this.one=false
                     this.two=true
                     this.three=false 
                     this.video=this.$refs.mainVideo
                     this.whichpaly="main" 
-                    this.$refs.mediaControl.setCurrentTime(this.threecu)      
+                    this.$refs.mediaControl.setCurrentTime(this.threecu)
+                        
 
                 }
                 else if(this.twocu>=(this.maintime+this.headtime)&&this.twocu<(this.headtime+this.maintime+this.tailtime)){  
@@ -393,15 +410,19 @@ export default {
                     this.whichpaly="tail"
                 }
                 
-                if(this.twocu==(this.headtime+this.maintime+this.tailtime)){
+                if(this.twocu==(this.all)){
                 this.whichpaly="pause"
             }  
             }
         },
-        
+        maingo(){
+            // if(this.signal=="ischange"){
+            //     this.maincutime=this.cu+this.headtime
+               
+            // }
+        },
         getcurrents(cutime){
             this.twocu=cutime
-            console.log("curren",this.twocu)
 
         }
         
@@ -436,8 +457,10 @@ export default {
             
     } 
     .watermark-box{
-       .main{ 
+
+       .main{
            position: absolute;
+            width: 829px;
             height: 470px;  
             object-fit: fill;
             z-index: 1;
@@ -451,6 +474,7 @@ export default {
        .zimu{
            position: absolute;
            z-index: 10;
+           
            width: 620px;
            height: 30px;
            top: 80%;
