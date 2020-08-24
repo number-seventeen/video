@@ -9,10 +9,9 @@
             <div class="page-content2">
                 <div class="page-area area2">
                     <div class="view_box">
-                         <VideoPlayer ref="vp" :videourl="videolist" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+                         <VideoPlayer ref="vp" :videourl="videolist" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" :su="su" />
                     </div>
 <!-- 上面是播放器 -->
-
 
                     <div class="set_box"> 
                         <div class="zhimu">
@@ -139,7 +138,11 @@ export default {
             wimg:false,
             signal:"nochange",
             waterurl:Object,
-            gozimu:false
+            gozimu:false,
+            su:"",
+            u:"",
+            ind:0,
+            mn:""
            
             
             
@@ -173,6 +176,13 @@ export default {
                      
             }
         },
+        su:{
+            immediate:true,
+            handler:function(){
+               this.suvideo()
+                     
+            }
+        }
     },
     computed: {
         // ...mapState({
@@ -186,49 +196,42 @@ export default {
         },
     },
     
-    
-    
-    // computed:{
-    //     ...mapState({
-    //         currentMedia: state => state.appStore.currentMedia
-    //     })
-    // },
-    // watch:{
-    //     currentMedia:{
-    //         deep:true,
-    //         handler:function (newVal,oldVal){
-    //             console.log('currentMedia',newVal)
-    //         }
-    //     }
-    // },
-    
     mounted(){
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
         this.curSelects = this.$store.state.appStore.curSelects;
+        
+        
         // if(!this.currentMedia){
         //  console.log(this.curSelects.length)   /* 打印当前选择好的视频  */
          for (let selected = 0; selected < this.curSelects.length; selected++) {
              this.videolist=this.curSelects[selected].preUrl
+              this.su=this.curSelects[selected].width
+             if(this.su=="1080"){
+                this.su="340"
+                this.mn=this.curSelects[selected].preUrl
+               
+                // this.ind=this.videolist
+              
+                
+               
+                // if(this.ind==this.u){
+                // document.getElementsByClassName("main")[0].setAttribute("style","margin-left:270px;")
+                // }
+                
+                 
+             }
              this.items.push({url:this.videolist,})
+             
+             
                 
          }
-        
-         
-
-        //     this.$alert('未找到当前选择的素材,请返回素材挑选页', '提示', {
-        //         confirmButtonText: '返回',
-        //     }).then(() => {
-        //         this.$router.push({name:'source',query:global.params});
-        //     }).catch((event) => {
-        //         console.log('event',event)
-        //         // this.$router.push({name:'source',query:global.params});
-        //     });
-        // }
-
 
     },
     methods:{
+        suvideo(){
+           
+        },
         backHandler(){
             console.log('返回模板页')
             this.$confirm('此操作将放弃当前编辑的模板，是否继续？','提示', {
@@ -281,8 +284,11 @@ export default {
         },
         bigplay(index){
             var f=document.getElementsByClassName("main")[0]
-            var u=this.items[index].url
-            f.setAttribute("src",u)      
+            this.u=this.items[index].url
+            f.setAttribute("src",this.u)  
+            console.log(this.items[index])
+
+                
         },
         addClickHandler(){ 
             var oldlength=this.curSelects.length
@@ -300,7 +306,6 @@ export default {
             })
         },
         titleset(){
-            
             this.$refs.titleTailSet.show({canEdit:this.isAdministrator},(data)=>{  
                 this.waterurl=JSON.parse(data.templateData)
                 this.tlListTT.isSelected==true

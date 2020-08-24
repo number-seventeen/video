@@ -71,12 +71,12 @@
         if((this.zimuplay==true&&this.nozimu==true)||(this.zimuplay==true&&this.simplezimu=="nochange")){
           this.mas=this.mas
           this.ti=this.mas
-          this.i=Math.round(this.mas/4)
-          if(this.ti>=0&&this.ti<4){
+          this.i=Math.round(this.mas/2)
+          if(this.ti>=0&&this.ti<2){
             this.w=this.words[0].word 
                 
           }
-          else if(this.ti>=(4*this.i)&&this.ti<=(8*this.i)&&this.i!=0){
+          else if(this.ti>=(2*this.i)&&this.ti<=(4*this.i)&&this.i!=0){
             this.w=this.words[this.i].word 
             
                 
