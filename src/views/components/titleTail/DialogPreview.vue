@@ -185,7 +185,9 @@ export default {
             }
         },
         play(){
+           
             if(this.currentTime < this.seqDuration-200){
+            
                 clearInterval(this.timer);
                 this.timer = setInterval(this.enterframeHandler,40);
                 this.isPause = false;
@@ -204,6 +206,7 @@ export default {
         enterframeHandler(){
             this.currentTime += 40;
             let v = this.currentTime;
+            
             if(v>=0 && v<this.dur_title){
                 this.conshow1 = true;
                 this.conshow2 = false;
@@ -229,6 +232,7 @@ export default {
             }
         },
         seek(v){
+            console.log("seek",v)
             v = Math.min(this.seqDuration,Math.max(0,v));
             this.currentTime = v;
             if(v>=0 && v<this.dur_title){

@@ -137,7 +137,7 @@ export default {
         setCurrentTime(v){
             this.currentTime=v
             console.log("nn",this.currentTime)
-            this.progressValue = this.duration == 0?0:(this.currentTime/this.duration);
+            this.progressValue = this.duration == 0?0:(v/this.duration);
             this.$emit('vplayvalue',this.progressValue)
             this.$emit('vcurrenttime',v)
             this.$emit('current',this.currentTime)

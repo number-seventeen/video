@@ -8,10 +8,9 @@
             @canplaythrough="canplaythroughHandler"
             @error="errorHandler"
             @play="playHandler"
-            @playing="playingHandler"
-            @waiting="waitingHandler"
+            
             @pause="pauseHandler"
-            @ended="endedHandler"
+            
             @timeupdate="timeupdateHandler"
             @click="playAndpauseHandler" ></video>   
         </div>
@@ -25,10 +24,9 @@
             @canplaythrough="canplaythroughHandler"
             @error="errorHandler"
             @play="playHandler"
-            @playing="playingHandler"
-            @waiting="waitingHandler"
+            
             @pause="pauseHandler"
-            @ended="endedHandler"
+            
             @timeupdate="timeupdateHandler"
             @click="playAndpauseHandler"></video> 
              
@@ -53,10 +51,9 @@
             @canplaythrough="canplaythroughHandler"
             @error="errorHandler"
             @play="playHandler"
-            @playing="playingHandler"
-            @waiting="waitingHandler"
+           
             @pause="pauseHandler"
-            @ended="endedHandler"
+           
             @timeupdate="timeupdateHandler"
             @click="playAndpauseHandler"></video>   
         </div>
@@ -153,7 +150,8 @@ export default {
             zimushow:false,
             mainp:0,
             timer:null,
-            whichpaly:""
+            whichpaly:"",
+            currentTime:0,
 
            
             
@@ -203,16 +201,6 @@ export default {
                 }
             } 
         },
-        maincutime:{
-            immediate:true,
-            handler:function(){
-                if(this.signal=="ischange"){
-                    this.maingo()
-                }
-            }
-
-
-        }
         
     },
     
@@ -227,52 +215,122 @@ export default {
     },
 
     mounted(){
-         
     },
     destroyed(){
         
     },
     methods:{
         play(){
-            if(!this.video){
-                this.$nextTick(()=>{
-                    this.video.play()
-                    
-                 
-                    
-                })
-                return;
+            
+            if(this.signal=="ischange"){
+                console.log("seq",(this.all-200))
+                console.log("mmm",this.currentTime)
+                this.headtime=document.getElementsByClassName("head")[0].duration*1000
+                this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
+                this.maintime=document.getElementsByClassName("main")[0].duration*1000
+                this.all=this.headtime+this.tailtime+this.maintime
+                if(this.currentTime < this.all-200){
+                    clearInterval(this.timer);
+                    this.timer = setInterval(this.enterframeHandler,40);
+                    this.isPause = false;
+                }
             }
-            this.video.play();
+            else{
+                this.video.play()
+            }
+            
+        },
+        enterframeHandler(){
+            this.currentTime += 40;
+            let v = this.currentTime;
+            console.log("vvvvv",this.currentTime)
+            if(v>=0 && v<this.headtime){
+                this.one = true;
+                this.two = false;
+                this.three = false;
+                if(this.$refs.headVideo.paused){
+                    this.$refs.headVideo.play();
+                }
+            }else if(v>= this.headtime && v < (this.headtime+this.maintime)){
+                this.one = false;
+                this.two = true;
+                this.three= false;
+                if(this.$refs.mainVideo.paused){
+                    this.$refs.mainVideo.play();
+                }
+            }else if(v>= (this.headtime+this.maintime) && v<= this.all){
+                this.one = false;
+                this.two = false;
+                this.three = true;
+                if(this.$refs.tailVideo.paused){
+                    this.$refs.tailVideo.play();
+                }
+            }
+            this.$refs.mediaControl.setCurrentTime(v/1000);
+            if(v>this.all-40){
+                this.pause();
+            }
         },
         pause(){
-            this.video.pause();
+            clearInterval(this.timer);
+            this.isPause = true;
+            if(!this.$refs.headVideo.paused){
+                this.$refs.headVideo.pause();
+            }
+            if(!this.$refs.tailVideo.paused){
+                this.$refs.tailVideo.pause();
+            }
+            if(!this.$refs.mainVideo.paused){
+                this.$refs.mainVideo.pause();
+            }
         },
         seek(v){ 
-            this.currentTime = v;
+            if(this.signal=="ischange"){
+                this.headtime=document.getElementsByClassName("head")[0].duration*1000
+                this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
+                this.maintime=document.getElementsByClassName("main")[0].duration*1000
+                this.all=this.headtime+this.tailtime+this.maintime
+                v = Math.min(this.all,Math.max(0,v));
+                this.currentTime = v;
+                if(v>=0 && v<this.dur_title){
+                    this.one = true;
+                    this.two = false;
+                    this.three = false;
+                    this.$refs.headVideo.currentTime = v/1000;
+                }else if(v>= this.headtime && v < (this.headtime+this.maintime)){
+                    this.one = false;
+                    this.two = true;
+                    this.three = false;
+                    this.$refs.mainVideo.currentTime = v/1000;
+                }else if(v>= (this.headtime+this.maintime) && v<= this.all){
+                    this.one = false;
+                    this.two= false;
+                    this.three = true;
+                    this.$refs.tailVideo.currentTime = (v-(this.headtime+this.maintime))/1000;
+                }
             
-            
+            }
+            else{
+                this.$refs.mediaControl.setCurrentTime(v/1000)
+                this.$refs.mainVideo.currentTime = v/1000;
+            }
 
         },
         playAndpauseHandler(){
-            if(this.video.paused){
-                this.video.play();
-                
-                
+            if(this.isPause){
+                this.play();
             }else{
-                this.video.pause();
+                this.pause();
             }
-
         },
         loadedmetadataHandler(){
             if(!this.$refs.mediaControl) return;
                 if (this.signal=="ischange") { 
-                    this.headtime=document.getElementsByClassName("head")[0].duration
-                    this.headcutime=document.getElementsByClassName("head")[0].currentTime
-                    this.tailtime=document.getElementsByClassName("tail")[0].duration
-                    this.maintime=document.getElementsByClassName("main")[0].duration
+                    this.headtime=document.getElementsByClassName("head")[0].duration*1000
+                    this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
+                    this.maintime=document.getElementsByClassName("main")[0].duration*1000
                     this.all=this.headtime+this.tailtime+this.maintime
-                    this.$refs.mediaControl.setDuration(this.all)
+                    this.$refs.mediaControl.setDuration(this.all/1000)
                    
                 }else{
                     this.$refs.mediaControl.setDuration(this.video.duration)
@@ -284,11 +342,11 @@ export default {
         durationchangeHandler(){
             if(!this.$refs.mediaControl) return;
                 if (this.signal=="ischange") {
-                    this.headtime=document.getElementsByClassName("head")[0].duration
-                    this.tailtime=document.getElementsByClassName("tail")[0].duration
-                    this.maintime=document.getElementsByClassName("main")[0].duration
+                    this.headtime=document.getElementsByClassName("head")[0].duration*1000
+                    this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
+                    this.maintime=document.getElementsByClassName("main")[0].duration*1000
                     this.all=this.headtime+this.tailtime+this.maintime            
-                   this.$refs.mediaControl.setDuration(this.all) 
+                   this.$refs.mediaControl.setDuration(this.all/1000) 
                 }else{
                    this.$refs.mediaControl.setDuration(this.video.duration)
                 }
@@ -309,27 +367,16 @@ export default {
             }
             
         },
-        playingHandler(){
-            this.isPause = false;
-        },
-        waitingHandler(){
-            this.isPause = true;
-        },
+        
         pauseHandler(){
             this.isPause = true;
             this.zimuplay=false
         },
-        endedHandler(){
-            this.isPause = true;
-            if(this.toFirstFrame){
-                this.video.currentTime = 0;
-            }
-            
-        },
+        
         timeupdateHandler(){
-            if(this.$refs.mediaControl){
-                this.$refs.mediaControl.setCurrentTime(this.video.currentTime);
-            }
+            // if(this.$refs.mediaControl){
+            //     this.$refs.mediaControl.setCurrentTime(this.video.currentTime);
+            // }
         },
         mc_volumeHandler(v){
             if(this.video){
@@ -337,14 +384,16 @@ export default {
             }
         },
         mc_playHandler(v){
-            this.video.play();
+            // this.video.play();
+            this.play();
         },
         mc_pauseHandler(v){
-            this.video.pause();
+            // this.video.pause();
+            this.pause();
         },
         mc_seekHandler(v){
             // console.log('v',v);
-            this.video.currentTime = v;
+            this.seek(v*1000)
         },
         mouseoverHandler(){
             this.controlStatus = 'all';
@@ -356,14 +405,15 @@ export default {
         },
         chan(){
             if(this.signal=="ischange"){
-                this.headtime=document.getElementsByClassName("head")[0].duration
-                this.tailtime=document.getElementsByClassName("tail")[0].duration
-                this.maintime=document.getElementsByClassName("main")[0].duration
+                this.headtime=document.getElementsByClassName("head")[0].duration*1000
+                this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
+                this.maintime=document.getElementsByClassName("main")[0].duration*1000
                 this.all=this.headtime+this.maintime+this.tailtime
                 this.one=true
                 this.two=false
                 this.three=false 
-                this.video=this.$refs.headVideo       
+                this.video=this.$refs.headVideo  
+                console.log("hao")     
             }      
 
         },
@@ -372,55 +422,50 @@ export default {
             
         },
         getcurrenttime(ctime){
-            this.cu=ctime
-            console.log("uu",this.maincutime)
-            this.maincutime=document.getElementsByClassName("main")[0].currentTime
-            this.maincutime=this.maincutime
-            this.mas=this.maincutime
-            this.headcutime=document.getElementsByClassName("head")[0].currentTime
-            this.headcutime=this.headcutime
-            this.tailcutime=document.getElementsByClassName("tail")[0].currentTime
-            this.tailcutime=this.tailcutime
-            this.threecu=this.headcutime+this.maincutime+this.tailcutime
+            // this.cu=ctime
+            // console.log("uu",this.maincutime)
+            // this.maincutime=document.getElementsByClassName("main")[0].currentTime
+            // this.maincutime=this.maincutime
+            // this.mas=this.maincutime
+            // this.headcutime=document.getElementsByClassName("head")[0].currentTime
+            // this.headcutime=this.headcutime
+            // this.tailcutime=document.getElementsByClassName("tail")[0].currentTime
+            // this.tailcutime=this.tailcutime
+            // this.threecu=this.headcutime+this.maincutime+this.tailcutime
             
         },
         goplay(){ 
-            if(this.signal=="ischange"){  
-                if(this.twocu>=0&&this.twocu<this.headtime){
-                    this.whichpaly="head"  
-                    this.$refs.mediaControl.setCurrentTime(this.threecu)
-                }
-                else if(this.twocu>=this.headtime&&this.twocu<(this.maintime+this.headtime)){
-                    console.log("m")
-                    this.nozimu=true
-                    this.one=false
-                    this.two=true
-                    this.three=false 
-                    this.video=this.$refs.mainVideo
-                    this.whichpaly="main" 
-                    this.$refs.mediaControl.setCurrentTime(this.threecu)
+            // if(this.signal=="ischange"){  
+            //     if(this.twocu>=0&&this.twocu<this.headtime){
+            //         this.whichpaly="head"  
+            //         this.$refs.mediaControl.setCurrentTime(this.threecu)
+            //     }
+            //     else if(this.twocu>=this.headtime&&this.twocu<(this.maintime+this.headtime)){
+            //         console.log("m")
+            //         this.nozimu=true
+            //         this.one=false
+            //         this.two=true
+            //         this.three=false 
+            //         this.video=this.$refs.mainVideo
+            //         this.whichpaly="main" 
+            //         this.$refs.mediaControl.setCurrentTime(this.threecu)
                         
 
-                }
-                else if(this.twocu>=(this.maintime+this.headtime)&&this.twocu<(this.headtime+this.maintime+this.tailtime)){  
-                    this.one=false
-                    this.two=false
-                    this.three=true 
-                    this.video=this.$refs.tailVideo
-                    this.whichpaly="tail"
-                }
+            //     }
+            //     else if(this.twocu>=(this.maintime+this.headtime)&&this.twocu<(this.headtime+this.maintime+this.tailtime)){  
+            //         this.one=false
+            //         this.two=false
+            //         this.three=true 
+            //         this.video=this.$refs.tailVideo
+            //         this.whichpaly="tail"
+            //     }
                 
-                if(this.twocu==(this.all)){
-                this.whichpaly="pause"
-            }  
-            }
-        },
-        maingo(){
-            // if(this.signal=="ischange"){
-            //     this.maincutime=this.cu+this.headtime
-               
+            //     if(this.twocu==(this.all)){
+            //     this.whichpaly="pause"
+            // }  
             // }
         },
+       
         getcurrents(cutime){
             this.twocu=cutime
 

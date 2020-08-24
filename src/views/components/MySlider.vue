@@ -39,6 +39,8 @@ export default {
 	        deep: true,
             handler:function (newVal,oldVal){
                 this.sliderValue = newVal;
+                console.log("self",this.sliderValue)
+                
                 
                  
                 
@@ -48,6 +50,7 @@ export default {
     methods:{
         setValue(v){
             this.sliderValue = Math.min(1,Math.max(0,v));
+            
         },
         tt(){
            
@@ -64,21 +67,21 @@ export default {
             let rootW = this.$el.offsetWidth;
             let recordX = event.clientX;
             let record = this.currentTime;
-            
-            
-            
+        
             document.addEventListener("mousemove",bodymousemove);
             document.addEventListener("mouseup",bodymouseup);
 
             self.sliderValue = Math.min(1,Math.max(0,(event.clientX-mouseX)/rootW));
             self.$emit('value_change',self.sliderValue)
+            console.log("jjj",self.sliderValue)
+
 
             function bodymousemove(event){
                 event.preventDefault();
                 event.stopPropagation();
 
                 let willX = event.clientX-mouseX;//+recodeX;
-                console.log(willX)
+                
                 self.sliderValue = Math.min(1,Math.max(0,willX/rootW));
                 self.$emit('value_change',self.sliderValue)
             }
