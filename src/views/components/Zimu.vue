@@ -86,6 +86,7 @@
       ire(){
         this.i=this.i
         
+        
       }
   },
   
