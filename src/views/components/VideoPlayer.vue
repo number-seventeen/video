@@ -14,6 +14,7 @@
 
         <!-- 这是主视频盒子 -->
         <div class="media-con-box watermark-box" v-show="two">
+            <div class="setboxs" v-show="this.setbox"></div>
             <video ref="mainVideo" class="default-video main "
             :src="videourl"
             @loadedmetadata="loadedmetadataHandler"
@@ -106,6 +107,9 @@ export default {
         },
         gozimu:{
             required:true
+        },
+        setbox:{
+            required:true
         } 
         
 
@@ -141,6 +145,7 @@ export default {
             whichpaly:"",
             currentTime:0,
             mainbox:"",
+
 
            
             
@@ -382,7 +387,6 @@ export default {
         },
         getmainbox(maincu){
             this.mas=maincu
-            console.log(this.mas)
         }
             
     }
@@ -411,10 +415,14 @@ export default {
             
     } 
     .watermark-box{
-
+       .setboxs{
+          
+           float: left;
+           width: 270px;
+           height: 470px;
+       }
        .main{
            position: absolute;
-            width: 829px;
             height: 470px;  
             object-fit: fill;
             z-index: 1;
@@ -428,7 +436,6 @@ export default {
        .zimu{
            position: absolute;
            z-index: 10;
-           
            width: 620px;
            height: 30px;
            top: 80%;

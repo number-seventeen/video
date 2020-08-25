@@ -9,7 +9,7 @@
             <div class="page-content2">
                 <div class="page-area area2">
                     <div class="view_box">
-                         <VideoPlayer ref="vp" :videourl="videolist" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+                         <VideoPlayer ref="vp" :videourl="videolist" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
                     </div>
 <!-- 上面是播放器 -->
 
@@ -139,7 +139,12 @@ export default {
             wimg:false,
             signal:"nochange",
             waterurl:Object,
-            gozimu:false
+            gozimu:false,
+            curwidth:0,
+            selected:0,
+            setbox:false,
+            swidth:""
+            
            
             
             
@@ -173,6 +178,20 @@ export default {
                      
             }
         },
+        swidth:{
+            immediate:true,
+            handler:function(){
+                // if(this.swidth=="1920"){
+                //     console.log("mmm")
+                //     this.setbox=false
+
+                // }
+                // else if(this.swidth=="1080"){
+                //     console.log("hhhh")
+                //     this.setbox=true
+                // }   
+            }
+        }
     },
     computed: {
         // ...mapState({
@@ -185,47 +204,26 @@ export default {
         return this.currentOffset === 0;
         },
     },
-    
-    
-    
-    // computed:{
-    //     ...mapState({
-    //         currentMedia: state => state.appStore.currentMedia
-    //     })
-    // },
-    // watch:{
-    //     currentMedia:{
-    //         deep:true,
-    //         handler:function (newVal,oldVal){
-    //             console.log('currentMedia',newVal)
-    //         }
-    //     }
-    // },
-    
     mounted(){
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
         this.curSelects = this.$store.state.appStore.curSelects;
         // if(!this.currentMedia){
         //  console.log(this.curSelects.length)   /* 打印当前选择好的视频  */
-         for (let selected = 0; selected < this.curSelects.length; selected++) {
-             this.videolist=this.curSelects[selected].preUrl
+         for (this.selected = 0; this.selected < this.curSelects.length; this.selected++) {
+             this.videolist=this.curSelects[this.selected].preUrl
              this.items.push({url:this.videolist,})
-                
+             this.swidth=this.curSelects[this.selected].width 
+            //  if(this.items[this.curwidth]== this.u) {   
+            //  }
+            
          }
+        this.curwidth=this.curSelects.length-1
+        if(this.curSelects[this.curwidth].width=="1080" ){
+            this.setbox=true
+        }
         
          
-
-        //     this.$alert('未找到当前选择的素材,请返回素材挑选页', '提示', {
-        //         confirmButtonText: '返回',
-        //     }).then(() => {
-        //         this.$router.push({name:'source',query:global.params});
-        //     }).catch((event) => {
-        //         console.log('event',event)
-        //         // this.$router.push({name:'source',query:global.params});
-        //     });
-        // }
-
 
     },
     methods:{
@@ -282,7 +280,14 @@ export default {
         bigplay(index){
             var f=document.getElementsByClassName("main")[0]
             var u=this.items[index].url
-            f.setAttribute("src",u)      
+            f.setAttribute("src",u) 
+            if(this.curSelects[index].width=="1920" ){
+                this.setbox=false
+            }
+            else if(this.curSelects[index].width=="1080"){
+                this.setbox=true
+            }
+             
         },
         addClickHandler(){ 
             var oldlength=this.curSelects.length
@@ -334,16 +339,29 @@ export default {
             
         },
         addwater(){
-            if(this.tlListTT.isSelected!=true){
+            if(this.tlListTT.isSelected!=true&&this.setbox==false){
                 this.tlListTT=this.$store.state.appStore.tlListTT
-                this.waterurl=JSON.parse(this.tlListTT[4].templateData)
+                this.waterurl=JSON.parse(this.tlListTT[0].templateData)
                 this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
                 this.waterposx=this.waterurl.TitleTail[0].Pos.x
                 this.waterposy=this.waterurl.TitleTail[0].Pos.y
                 this.waterposw=this.waterurl.TitleTail[0].Pos.width
                 this.waterposh=this.waterurl.TitleTail[0].Pos.height
                 this.wimg=true
-            }      
+                console.log("noset")
+            }
+            else if(this.tlListTT.isSelected!=true&&this.setbox==true){
+                this.tlListTT=this.$store.state.appStore.tlListTT
+                this.waterurl=JSON.parse(this.tlListTT[4].templateData)
+                this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.15
+                this.waterposy=this.waterurl.TitleTail[0].Pos.y-0.03
+                this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.15
+               
+                this.waterposh=this.waterurl.TitleTail[0].Pos.height+0.01
+                this.wimg=true
+                console.log("yesset")
+            }            
             
         },
         delwater(){

@@ -57,7 +57,7 @@
     mas:{
       handler:function(){
         this.maint()
-        console.log("mas",this.mas)
+        
         }
     },
     i:{
