@@ -69,25 +69,7 @@ export default {
         all:{
             required:true
         },
-        pvalue:{
-            required:true
-        },
-        ptailvalue:{
-            required:true
-        },
-        twocu:{
-             required:true
-        },
-        threecu:{
-             required:true
-        },
-        maincutime:{
-            required:true   
-        },
-        headcutime:{
-            required:true
-        },
-        tailcutime:{
+        mainbox:{
             required:true
         }
         
@@ -96,11 +78,10 @@ export default {
     watch:{
         currentTime:{
             handler:function(){
-                if(this.signal=="ischange"){
-                    this.mplay()
-                }
+                
             }
-        }
+        },
+
     },
     data(){
         return {
@@ -136,19 +117,12 @@ export default {
     methods:{
         setCurrentTime(v){
             this.currentTime=v
-            console.log("nn",this.currentTime)
+            if(this.mainbox=="nochange"){
+                this.$emit("mainboxtime",this.currentTime)
+            }
             this.progressValue = this.duration == 0?0:(v/this.duration);
-            this.$emit('vplayvalue',this.progressValue)
-            this.$emit('vcurrenttime',v)
-            this.$emit('current',this.currentTime)
-            
+        },
         
-        },
-        mplay(){
-            // this.twocu=this.maincutime+this.headcutime+this.tailcutime
-            // this.setCurrentTime(this.twocu)
-            // console.log("hao")
-        },
         setDuration(v){
             this.duration = v;
         },
