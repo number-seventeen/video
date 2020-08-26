@@ -41,7 +41,6 @@ export default {
                 this.sliderValue = newVal;
                 
                 
-                
                  
                 
             }
@@ -73,6 +72,7 @@ export default {
 
             self.sliderValue = Math.min(1,Math.max(0,(event.clientX-mouseX)/rootW));
             self.$emit('value_change',self.sliderValue)
+            
             
 
 

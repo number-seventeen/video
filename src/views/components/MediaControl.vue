@@ -152,6 +152,7 @@ export default {
         value_changeHandler(v){
             // console.log('value_changeHandler',v,event)
             this.$emit('seek',v*this.duration);
+            
         },
         muteClickHandler(){
             this.isMute = !this.isMute;

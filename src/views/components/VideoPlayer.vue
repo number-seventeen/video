@@ -35,8 +35,6 @@
                 <Zimu ref="zimu" :zimuplay="zimuplay" :playvalue="playvalue" :nozimu="nozimu" :simplezimu="simplezimu" :zimushow="zimushow" :maincutime="maincutime" :headtime="headtime" :miantime="maintime" :mas="mas"/>
             </div>
 
-           
-           
         </div>
          <div class="media-tail-box" v-show="three" >
             <div class="setboxs" v-show="this.setbox"></div>
@@ -171,7 +169,10 @@ export default {
                 if(this.gozimu==false) {
                     this.zimushow=false
                     this.pauseHandler()
-                }          
+                }
+                else if(this.gozimu==true) {
+                    this.zimushow=true
+                }         
             } 
         },
         
@@ -224,9 +225,7 @@ export default {
                 if(this.$refs.mainVideo.paused){
                     this.$refs.mainVideo.play();
                 }
-                this.nozimu=true
-                this.zimushow=true
-                this.zimuplay==true
+                 
                 this.mas=((this.currentTime/1000)-(this.headtime/1000))
             }else if(v>= (this.headtime+this.maintime) && v<= this.all){
                 this.one = false;
@@ -262,24 +261,28 @@ export default {
                 this.all=this.headtime+this.tailtime+this.maintime
                 v = Math.min(this.all,Math.max(0,v));
                 this.currentTime = v;
-                if(v>=0 && v<this.dur_title){
+               
+                if(v>=0 && v<this.headtime){
                     this.one = true;
                     this.two = false;
                     this.three = false;
                     this.$refs.headVideo.currentTime = v/1000;
                 }else if(v>= this.headtime && v < (this.headtime+this.maintime)){
+                    console.log("gogo")
                     this.one = false;
                     this.two = true;
                     this.three = false;
-                    this.$refs.mainVideo.currentTime = v/1000;
-                    
+                    this.$refs.mainVideo.currentTime = (v-this.headtime)/1000;
+                    console.log("main",this.$refs.mainVideo.currentTime)
+                    this.mas=((this.currentTime/1000)-(this.headtime/1000))
                 }else if(v>= (this.headtime+this.maintime) && v<= this.all){
                     this.one = false;
                     this.two= false;
                     this.three = true;
                     this.$refs.tailVideo.currentTime = (v-(this.headtime+this.maintime))/1000;
                 }
-            
+                this.$refs.mediaControl.setCurrentTime(v/1000);
+                
             }
             else{
                 this.$refs.mediaControl.setCurrentTime(v/1000)
@@ -379,7 +382,7 @@ export default {
                 this.three=false 
                 this.video=this.$refs.headVideo 
                 this.mainbox=this.signal 
-                  
+                this.simplezimu=this.signal    
             } 
             else if(this.signal=="nochange"){
                 this.timeupdateHandler()
@@ -444,13 +447,15 @@ export default {
            z-index: 10;
            width: 620px;
            height: 30px;
-           top: 80%;
+           top: 78%;
            left: 13%;
            text-align: center;
            line-height: 30px;
            color: pink;
            font-weight: 700;
            letter-spacing: 0.15em;
+           font-size: 17px;
+           
        }
        
     }
