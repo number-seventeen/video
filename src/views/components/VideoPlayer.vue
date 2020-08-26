@@ -26,7 +26,7 @@
             
             <img class="render-img" :src="waterimgs" v-show="wimg" :style="{
                 left:waterposx*100+'%',
-                top:(waterposy-0.1)*100+'%',
+                top:(waterposy-0.12)*100+'%',
                 width:waterposw*100+'%',
                 height:waterposh*100+'%',
             }" />
@@ -395,13 +395,14 @@ export default {
 
 <style lang="scss" scoped>
 .video-player{
+   
     width: 100%;
     height: 100%;
     position: relative;
     .head{
           position: absolute;
             width: 829px;
-            height: 470px;
+            height: 460px;
             object-fit: fill;
             z-index: 1;  
            
@@ -416,14 +417,13 @@ export default {
     } 
     .watermark-box{
        .setboxs{
-          
            float: left;
            width: 270px;
-           height: 470px;
+           height: 460px;
        }
        .main{
            position: absolute;
-            height: 470px;  
+            height: 460px;  
             object-fit: fill;
             z-index: 1;
        }

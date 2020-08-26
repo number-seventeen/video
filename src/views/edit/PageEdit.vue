@@ -287,6 +287,9 @@ export default {
             else if(this.curSelects[index].width=="1080"){
                 this.setbox=true
             }
+            if (this.values==true) {
+                    this.addwater()
+            }
              
         },
         addClickHandler(){ 
@@ -310,13 +313,28 @@ export default {
                 this.waterurl=JSON.parse(data.templateData)
                 this.tlListTT.isSelected==true
                 if(this.waterurl.TitleTail.length==1){
-                     this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
-                     this.waterposx=this.waterurl.TitleTail[0].Pos.x
-                     this.waterposy=this.waterurl.TitleTail[0].Pos.y
-                     this.waterposw=this.waterurl.TitleTail[0].Pos.width
-                     this.waterposh=this.waterurl.TitleTail[0].Pos.height
-                     this.wimg=true
-                     
+                    //  this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                    //  this.waterposx=this.waterurl.TitleTail[0].Pos.x
+                    //  this.waterposy=this.waterurl.TitleTail[0].Pos.y
+                    //  this.waterposw=this.waterurl.TitleTail[0].Pos.width
+                    //  this.waterposh=this.waterurl.TitleTail[0].Pos.height
+                    //  this.wimg=true
+                    if(this.setbox==false){
+                        this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                        this.waterposx=this.waterurl.TitleTail[0].Pos.x
+                        this.waterposy=this.waterurl.TitleTail[0].Pos.y
+                        this.waterposw=this.waterurl.TitleTail[0].Pos.width
+                        this.waterposh=this.waterurl.TitleTail[0].Pos.height
+                        this.wimg=true 
+                    } 
+                    if(this.setbox==true){
+                        this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                        this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.14
+                        this.waterposy=this.waterurl.TitleTail[0].Pos.y+0.01
+                        this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.2
+                        this.waterposh=this.waterurl.TitleTail[0].Pos.height-0.02
+                        this.wimg=true 
+                    }
                      
                 }else if(this.waterurl.TitleTail.length==3){
                      this.headvideo=this.waterurl.TitleTail[0].PreviewUrl
@@ -348,7 +366,7 @@ export default {
                 this.waterposw=this.waterurl.TitleTail[0].Pos.width
                 this.waterposh=this.waterurl.TitleTail[0].Pos.height
                 this.wimg=true
-                console.log("noset")
+               
             }
             else if(this.tlListTT.isSelected!=true&&this.setbox==true){
                 this.tlListTT=this.$store.state.appStore.tlListTT
@@ -357,10 +375,9 @@ export default {
                 this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.15
                 this.waterposy=this.waterurl.TitleTail[0].Pos.y-0.03
                 this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.15
-               
                 this.waterposh=this.waterurl.TitleTail[0].Pos.height+0.01
                 this.wimg=true
-                console.log("yesset")
+                
             }            
             
         },
