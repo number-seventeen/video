@@ -337,19 +337,27 @@ export default {
                     }
                      
                 }else if(this.waterurl.TitleTail.length==3){
-                     this.headvideo=this.waterurl.TitleTail[0].PreviewUrl
-                     this.tailvideo=this.waterurl.TitleTail[1].PreviewUrl
-                     this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
-                     this.waterposx=this.waterurl.TitleTail[2].Pos.x
-                     this.waterposy=this.waterurl.TitleTail[2].Pos.y
-                     this.waterposw=this.waterurl.TitleTail[2].Pos.width
-                     this.waterposh=this.waterurl.TitleTail[2].Pos.height
-                     this.wimg=true
-                     if (data.isSelected==true) {
-                        document.getElementsByClassName("nochange")[0].setAttribute("class","ischange")
-                        this.signal=document.getElementsByClassName("ischange")[0].getAttribute("class")
-                         
-                     }         
+                    this.headvideo=this.waterurl.TitleTail[0].PreviewUrl
+                    this.tailvideo=this.waterurl.TitleTail[1].PreviewUrl
+                    document.getElementsByClassName("nochange")[0].setAttribute("class","ischange")
+                    this.signal=document.getElementsByClassName("ischange")[0].getAttribute("class")
+                    if(this.setbox==false){
+                        this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
+                        this.waterposx=this.waterurl.TitleTail[2].Pos.x
+                        this.waterposy=this.waterurl.TitleTail[2].Pos.y
+                        this.waterposw=this.waterurl.TitleTail[2].Pos.width
+                        this.waterposh=this.waterurl.TitleTail[2].Pos.height
+                        this.wimg=true 
+                    } 
+                    if(this.setbox==true){
+                        this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
+                        this.waterposx=this.waterurl.TitleTail[2].Pos.x-0.14
+                        this.waterposy=this.waterurl.TitleTail[2].Pos.y+0.01
+                        this.waterposw=this.waterurl.TitleTail[2].Pos.width-0.2
+                        this.waterposh=this.waterurl.TitleTail[2].Pos.height-0.02
+                        this.wimg=true 
+                    }     
+                            
                              
                 }
                 

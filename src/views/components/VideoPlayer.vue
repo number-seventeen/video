@@ -2,6 +2,7 @@
     <div class="video-player" ref="myRoot" @mouseover="mouseoverHandler"  @mouseout="mouseoutHandler">
          <div class="nochange"></div>
          <div class="media-head-box" v-show="one" >
+            <div class="setboxs" v-show="this.setbox"></div>
             <video ref="headVideo" class="default-video head" 
             :src="headvideos"
             @loadedmetadata="loadedmetadataHandler"
@@ -38,6 +39,7 @@
            
         </div>
          <div class="media-tail-box" v-show="three" >
+            <div class="setboxs" v-show="this.setbox"></div>
             <video ref="tailVideo" class="default-video tail"
             :src="tailvideos"
             @loadedmetadata="loadedmetadataHandler"
@@ -401,7 +403,6 @@ export default {
     position: relative;
     .head{
           position: absolute;
-            width: 829px;
             height: 460px;
             object-fit: fill;
             z-index: 1;  
@@ -409,12 +410,17 @@ export default {
     } 
     .tail{
           position: absolute;
-            width: 829px;
+            
             height: 460px;
             object-fit: fill;
             z-index: 1;  
             
     } 
+    .setboxs{
+           float: left;
+           width: 270px;
+           height: 460px;
+    }
     .watermark-box{
        .setboxs{
            float: left;
