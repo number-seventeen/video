@@ -31,3 +31,4 @@ window.AppVue = new Vue({
 	store
 }).$mount('#app')
 
+

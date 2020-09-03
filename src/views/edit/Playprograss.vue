@@ -110,8 +110,6 @@ export default {
                     music.play();
                     this.status = 'el-icon-video-play';
                    
-					
-					
                 }else{
                     music.pause();
                     this.status = 'el-icon-video-pause';

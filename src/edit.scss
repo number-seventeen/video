@@ -250,13 +250,36 @@ body {
   }
 
   .card-carousel--card{
-    border: 1px solid black;
-    height: 132px;
+    height: 130px;
+  }
+  .biaohao{
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      background: rgb(90, 177, 235);
+      border-radius: 0 0 3px 0;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 20px;
+      color: white;
+      
+  }
+  .vtimes{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 0 0 3px 0;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 20px;
+    color: white;
+    margin-top: 100px; 
   }
   .card-carousel-cards .card-carousel--card {
     margin-right:28px;
     cursor: pointer;
-    box-shadow: 0 4px 15px 0 rgba(40, 44, 53, 0.06), 0 2px 2px 0 rgba(40, 44, 53, 0.08);
     background-color: #fff;
     border-radius: 4px;
     z-index: 3;
@@ -300,13 +323,25 @@ body {
       background-color: gray;
       border-color: gray;
   }
-  .el-icon-circle-close{
+  .v_del{
     position: absolute;
-    font-size: 25px;
-    margin-left: 172px;
-    margin-top:-13px;
-    color: black;
-    opacity: 0.6;
-
-
+    width: 20px;
+    height: 20px;
+    margin-left: 165px;
+    border-radius: 0 0 0 3px;
+    background: rgb(167, 176, 182);
+    
+    }
+  .el-icon-delete{
+    position: absolute;
+    font-size: 10px;
+    color: white;
+    z-index: 10;
+    margin: 0px;
+    margin-left:5px;
+    margin-top: 3px;
+    font-weight: 550;
   }
+  
+  
+  

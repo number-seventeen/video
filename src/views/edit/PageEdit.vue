@@ -9,11 +9,9 @@
             <div class="page-content2">
                 <div class="page-area area2">
                     <div class="view_box">
-                         <VideoPlayer ref="vp" :videourl="videolist" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+                         <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
                     </div>
 <!-- 上面是播放器 -->
-
-
                     <div class="set_box"> 
                         <div class="zhimu">
                             <div class="set">
@@ -74,9 +72,13 @@
                         <div class="card-carousel">
                             <div class="card-carousel--overflow-container">
                             <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
-                                <div class="card-carousel--card" v-for="(item,index) in items" :key="index" @click="bigplay(index)">
-                                <i class="el-icon-circle-close" @click="del(index)"></i>
-                                <video v-bind:src="item.url" class="choosen" style="width: 185px;height: 130px; object-fit:fill;" ></video>
+                                <div class="card-carousel--card" :class="{'vcurrent':nu==index}" v-for="(item,index) in items" :key="index" @click="bigplay(index)"  @mouseover="set_show(index)" @mouseout="move_show(index)" >
+                                    <div class="v_del" v-show="vdel">
+                                        <i class="el-icon-delete" @click="del(index)"></i>
+                                    </div>
+                                    <div class="biaohao">{{item.id+1}}</div>
+                                    <div class="vtimes">{{item.dur}}</div>
+                                    <video v-bind:src="item.url"  class="choosen" style="width: 185px;height: 130px; object-fit:fill; border-radius: 4px;"></video>
                                 </div>
                             </div>
                             </div>
@@ -143,12 +145,12 @@ export default {
             curwidth:0,
             selected:0,
             setbox:false,
-            swidth:""
-            
-           
-            
-            
-            
+            swidth:"",
+            vdel:false,
+            nu:0,
+            vstart:"",
+            vtimes:0,
+            vvtimes:""   
         }
     },
     watch:{
@@ -178,20 +180,10 @@ export default {
                      
             }
         },
-        swidth:{
-            immediate:true,
-            handler:function(){
-                // if(this.swidth=="1920"){
-                //     console.log("mmm")
-                //     this.setbox=false
+        
+       
+        
 
-                // }
-                // else if(this.swidth=="1080"){
-                //     console.log("hhhh")
-                //     this.setbox=true
-                // }   
-            }
-        }
     },
     computed: {
         // ...mapState({
@@ -208,22 +200,22 @@ export default {
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
         this.curSelects = this.$store.state.appStore.curSelects;
-        // if(!this.currentMedia){
-        //  console.log(this.curSelects.length)   /* 打印当前选择好的视频  */
-         for (this.selected = 0; this.selected < this.curSelects.length; this.selected++) {
+        // this.vstart=this.curSelects[0].preUrl
+        for (this.selected = 0; this.selected < this.curSelects.length; this.selected++) {
              this.videolist=this.curSelects[this.selected].preUrl
-             this.items.push({url:this.videolist,})
-             this.swidth=this.curSelects[this.selected].width 
-            //  if(this.items[this.curwidth]== this.u) {   
-            //  }
-            
-         }
+             this.times=this.curSelects[this.selected].duration
+             this.items.push({url:this.videolist,id:this.selected,dur:this.vvtimes})
+             this.swidth=this.curSelects[this.selected].width      
+             this.vvtimes=this.secTotime(this.times/1000)
+             console.log(this.secTotime(this.times/1000))
+             
+        }
+        console.log()
         this.curwidth=this.curSelects.length-1
         if(this.curSelects[this.curwidth].width=="1080" ){
             this.setbox=true
         }
-        
-         
+        this.vstart=this.items[0].url
 
     },
     methods:{
@@ -241,6 +233,29 @@ export default {
                     console.log('event',event)
                 })
         },
+        secTotime(s) {
+            var t
+            if(s > -1){
+                var hour = Math.floor(s/3600)
+                var min = Math.floor(s/60) % 60
+                var sec = s % 60
+                if(hour < 10) {
+                    t = '0'+ hour + ":"
+                } else {
+                    t = hour + ":"
+                }
+                if(min < 10){
+                    t += "0"
+                }
+                    t += min + ":"
+                if(sec < 10){
+                    t += "0"
+                }
+                t += sec.toFixed(0)
+            }
+            return t
+        },
+
         renderHandler(){
             console.log('合成窗口')
         },
@@ -277,10 +292,11 @@ export default {
                 });  
            
         },
-        bigplay(index){
+         bigplay(index){
             var f=document.getElementsByClassName("main")[0]
             var u=this.items[index].url
             f.setAttribute("src",u) 
+            this.nu=index
             if(this.curSelects[index].width=="1920" ){
                 this.setbox=false
             }
@@ -289,9 +305,10 @@ export default {
             }
             if (this.values==true) {
                     this.addwater()
-            }
-             
+            } 
+            
         },
+
         addClickHandler(){ 
             var oldlength=this.curSelects.length
             this.$refs.dialogSelectSource.show({},(arr)=>{
@@ -300,15 +317,13 @@ export default {
                     this.curSelects.push(this.plus)
                     var newlength=this.curSelects.length
                     var videolist=this.curSelects[newlength-1].preUrl
-                    this.items.push({url:this.videolist})
-                     
+                    this.items.push({url:this.videolist})      
                 }
                 this.reload()
                     
             })
         },
-        titleset(){
-            
+        titleset(){ 
             this.$refs.titleTailSet.show({canEdit:this.isAdministrator},(data)=>{  
                 this.waterurl=JSON.parse(data.templateData)
                 this.tlListTT.isSelected==true
@@ -397,7 +412,18 @@ export default {
         },
         nozimus(){
             this.gozimu=false
+        },
+        set_show(index){
+            
+                document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:block;")
+                
+            
+        },
+        move_show(index){
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:none;")
         }
+       
+        
 
             
     }   
