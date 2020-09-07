@@ -9,7 +9,7 @@
         </div>
         <div class="control-btns">
             <div class="cb-left">
-                <div class="cb-btn btn-play" v-if="isPause" @click="playHandler">
+                <div class="cb-btn btn-play" v-if="isPause" @click="playHandler" >
                     <svg class="icon svg-icon" aria-hidden="true">
                         <use xlink:href="#iconbofang"></use>
                     </svg>

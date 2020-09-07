@@ -62,8 +62,8 @@
                             <div class="title_two">(共{{items.length}}个)</div>
                         </div>
                         <div class="right_title">
-                            <i class="el-icon-warning-outline" @mouseover="btipshow()" @mouseout="btiphide()"><div class="tips" v-if="st==true">AI标识为红色时,无法添加智能字幕;<br>译标识为红色时，无法添加译字幕;</div></i>
-                            <i class="el-icon-plus" @click="addClickHandler"></i>
+                            <i class="el-icon-delete" id="alldel" @mouseover="btipshow()" @mouseout="btiphide()" @click="alldel()" style="font-weight:200;font-size:25px; color:black; position:relative; right:15px;"></i>
+                            <i class="el-icon-plus" @click="addClickHandler" ></i>
                         </div>
                     
                         </div>
@@ -71,16 +71,34 @@
                         <el-button type="primary" icon="el-icon-arrow-left" @click="moveCarousel(-1)" :disabled="atHeadOfList" class="arrow-left" id="arrow-left" style="color: #FFF;background-color: gray;border-color: gray; "></el-button>
                         <div class="card-carousel">
                             <div class="card-carousel--overflow-container">
-                            <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
-                                <div class="card-carousel--card" :class="{'vcurrent':nu==index}" v-for="(item,index) in items" :key="index" @click="bigplay(index)"  @mouseover="set_show(index)" @mouseout="move_show(index)" >
-                                    <div class="v_del" v-show="vdel">
-                                        <i class="el-icon-delete" @click="del(index)"></i>
+                                <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
+                                    <div class="card-carousel--card" :class="{'vcurrent':nu==index}" v-for="(item,index) in items" :key="index" @click="bigplay(index)"  @mouseover="set_show(index)" @mouseout="move_show(index)" >
+                                        <div class="v_del" v-show="vdel">
+                                            <i class="el-icon-delete" @click="del(index)"></i>
+                                        </div>
+                                        <div class="biaohao">{{item.id+1}}</div>
+                                        <div class="vtimes">{{item.dur}}</div>
+                                        <div class="vinfo"  v-show="vdel">
+                                            <div class="info">
+                                                <ul>
+                                                    <li>
+                                                        <span>名称:</span><span> 电视剪辑</span>
+                                                    </li>
+                                                    <li>
+                                                        <span>格式:</span><span> MP4</span>
+                                                    </li>
+                                                    <li>
+                                                        <span>时长:</span><span>{{item.dur}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <video v-bind:src="item.url"  class="choosen" style="width: 185px;height: 130px; object-fit:fill; border-radius: 4px;"></video>
                                     </div>
-                                    <div class="biaohao">{{item.id+1}}</div>
-                                    <div class="vtimes">{{item.dur}}</div>
-                                    <video v-bind:src="item.url"  class="choosen" style="width: 185px;height: 130px; object-fit:fill; border-radius: 4px;"></video>
+                                    <div class="bigadd" @click="addClickHandler">
+                                        <i class="el-icon-plus" ></i>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                         <el-button type="primary" icon="el-icon-arrow-right" @click="moveCarousel(1)" :disabled="atEndOfList" class="arrow-right" id="arrow-right" style="color: #FFF;background-color: gray;border-color: gray; "></el-button>
@@ -150,7 +168,8 @@ export default {
             nu:0,
             vstart:"",
             vtimes:0,
-            vvtimes:""   
+            vvtimes:""
+   
         }
     },
     watch:{
@@ -180,10 +199,6 @@ export default {
                      
             }
         },
-        
-       
-        
-
     },
     computed: {
         // ...mapState({
@@ -204,19 +219,22 @@ export default {
         for (this.selected = 0; this.selected < this.curSelects.length; this.selected++) {
              this.videolist=this.curSelects[this.selected].preUrl
              this.times=this.curSelects[this.selected].duration
+             this.vvtimes=this.secTotime(this.times/1000) 
              this.items.push({url:this.videolist,id:this.selected,dur:this.vvtimes})
-             this.swidth=this.curSelects[this.selected].width      
-             this.vvtimes=this.secTotime(this.times/1000)
-             console.log(this.secTotime(this.times/1000))
-             
+                 
+              
         }
-        console.log()
-        this.curwidth=this.curSelects.length-1
-        if(this.curSelects[this.curwidth].width=="1080" ){
-            this.setbox=true
-        }
-        this.vstart=this.items[0].url
 
+        
+        this.curwidth=this.curSelects.length-1
+        if(this.curSelects.length>0){
+             if(this.curSelects[this.curwidth].width=="1080" ){
+                this.setbox=true
+            }
+            this.vstart=this.items[0].url
+        }
+        
+        
     },
     methods:{
         backHandler(){
@@ -292,20 +310,43 @@ export default {
                 });  
            
         },
+        alldel(index){
+          this.$confirm('是否删除全部已添加视频, ', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                for (var inds = 0; inds < this.curSelects.length; inds++) { 
+                    // Object.keys(this.curSelects[inds]).forEach(key => (this.curSelects[inds][key] = ''));
+                    this.curSelects.splice(inds,this.curSelects.length)
+                    this.reload()
+                    
+                }
+                console.log("删除成功")
+                });  
+                
+
+               
+            
+            
+        },
          bigplay(index){
             var f=document.getElementsByClassName("main")[0]
             var u=this.items[index].url
             f.setAttribute("src",u) 
             this.nu=index
-            if(this.curSelects[index].width=="1920" ){
-                this.setbox=false
-            }
-            else if(this.curSelects[index].width=="1080"){
-                this.setbox=true
-            }
-            if (this.values==true) {
+            if(this.curSelects.length>0){
+                if(this.curSelects[index].width=="1920" ){
+                    this.setbox=false
+                }
+                else if(this.curSelects[index].width=="1080"){
+                    this.setbox=true
+                }
+                if (this.values==true) {
                     this.addwater()
-            } 
+                } 
+            }
+            
             
         },
 
@@ -317,17 +358,17 @@ export default {
                     this.curSelects.push(this.plus)
                     var newlength=this.curSelects.length
                     var videolist=this.curSelects[newlength-1].preUrl
-                    this.items.push({url:this.videolist})      
-                }
-                this.reload()
-                    
+                    this.items.push({url:this.videolist}) 
+                    this.reload()     
+                }       
             })
+           
         },
         titleset(){ 
             this.$refs.titleTailSet.show({canEdit:this.isAdministrator},(data)=>{  
                 this.waterurl=JSON.parse(data.templateData)
                 this.tlListTT.isSelected==true
-                if(this.waterurl.TitleTail.length==1){
+                if(this.waterurl.TitleTail.length==1&&(this.curSelects.length>0)){
                     //  this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
                     //  this.waterposx=this.waterurl.TitleTail[0].Pos.x
                     //  this.waterposy=this.waterurl.TitleTail[0].Pos.y
@@ -351,7 +392,7 @@ export default {
                         this.wimg=true 
                     }
                      
-                }else if(this.waterurl.TitleTail.length==3){
+                }else if(this.waterurl.TitleTail.length==3&&(this.curSelects.length>0)){
                     this.headvideo=this.waterurl.TitleTail[0].PreviewUrl
                     this.tailvideo=this.waterurl.TitleTail[1].PreviewUrl
                     document.getElementsByClassName("nochange")[0].setAttribute("class","ischange")
@@ -380,7 +421,7 @@ export default {
             
         },
         addwater(){
-            if(this.tlListTT.isSelected!=true&&this.setbox==false){
+            if(this.tlListTT.isSelected!=true&&this.setbox==false&&(this.curSelects.length>0)){
                 this.tlListTT=this.$store.state.appStore.tlListTT
                 this.waterurl=JSON.parse(this.tlListTT[0].templateData)
                 this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
@@ -391,7 +432,7 @@ export default {
                 this.wimg=true
                
             }
-            else if(this.tlListTT.isSelected!=true&&this.setbox==true){
+            else if(this.tlListTT.isSelected!=true&&this.setbox==true&&(this.curSelects.length>0)){
                 this.tlListTT=this.$store.state.appStore.tlListTT
                 this.waterurl=JSON.parse(this.tlListTT[4].templateData)
                 this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
@@ -414,13 +455,13 @@ export default {
             this.gozimu=false
         },
         set_show(index){
-            
-                document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:block;")
-                
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:block;")
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:block;") 
             
         },
         move_show(index){
             document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:none;")
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:none;")
         }
        
         
