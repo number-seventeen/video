@@ -87,6 +87,7 @@ export default {
 
 <style lang="scss" scoped>
 .main-header{
+    box-shadow: 0 0 2px rgb(177, 174, 174);
     width: 100%;
     height: 50px;
     // position: fixed;
@@ -101,17 +102,20 @@ export default {
         display: flex;
         align-items: center;
         flex: 1;
-        height: 100%;
+        width: 20px;
+        height: 20px;
 
         .back-btn{
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             border: 1px solid #d6d6d6;
             border-radius: 50%;
             align-items: center;
             color: #777777;
-            font-size: 25px;
-            line-height: 31px;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 23px;
+            padding-bottom: 2px;
             margin-right: 15px;
             cursor: pointer;
             display: flex;
@@ -125,6 +129,7 @@ export default {
         align-items: center;
         flex: 1;
         height: 100%;
+        margin-right: 10px;
 
         .children-root{
             flex: 1;
@@ -133,8 +138,8 @@ export default {
         }
 
         .right-btn{
-            width: 30px;
-            height: 30px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background-color: #FFAA00;
             margin-right: 10px;

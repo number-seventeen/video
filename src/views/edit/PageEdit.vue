@@ -1,8 +1,8 @@
 <template>
     <div class="page-edit">
-        <MainHeader :hasBack="true" title="模板编辑" @backHandler="backHandler" :hasTaskBtn="false" :hasHelpBtn="false">
+        <MainHeader :hasBack="true"  @backHandler="backHandler" :hasTaskBtn="false" :hasHelpBtn="false">
             <div class="edit-top-btns">
-                <el-button type="primary" size="small" @click="renderHandler" class="finish">合成</el-button>
+                <el-button type="primary" size="small" @click="renderHandler" class="finish" style="width:50px; height:25px;"><span>合成</span></el-button>
             </div>
         </MainHeader>
         <div class="page-content">
@@ -12,7 +12,7 @@
                          <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
                     </div>
 <!-- 上面是播放器 -->
-                    <div class="set_box"> 
+                    <div class="set_box" v-show="tool"> 
                         <div class="zhimu">
                             <div class="set">
                                 <div class="zhimu_set">字幕设置: <i class="tip el-icon-warning" @mouseover="tipshow()" @mouseout="tiphide()"><div class="tips" v-if="s==true">已选视频中若未包含智能识别和智能翻译数据，则自动忽略，并在列表中标识展示！</div></i> </div>
@@ -57,18 +57,18 @@
                 <div class="page-area area4">
                     <div class="bottom_video">
                         <div class="bottom_title">
-                        <div class="left_title">
-                            <div class="title_one">已选择视频</div>
-                            <div class="title_two">(共{{items.length}}个)</div>
-                        </div>
-                        <div class="right_title">
-                            <i class="el-icon-delete" id="alldel" @mouseover="btipshow()" @mouseout="btiphide()" @click="alldel()" style="font-weight:200;font-size:25px; color:black; position:relative; right:15px;"></i>
-                            <i class="el-icon-plus" @click="addClickHandler" ></i>
-                        </div>
-                    
+                            <div class="left_title">
+                                <div class="title_one">已选素材</div>
+                                <div class="title_two">(当前已选{{items.length}})</div>
+                            </div>
+                            <div class="right_title">
+                                <i class="el-icon-plus" @click="addClickHandler" ></i>
+                                <i class="el-icon-delete" id="alldel" @mouseover="btipshow()" @mouseout="btiphide()" @click="alldel()" style="font-weight:200;font-size:19px; color:black; position:relative; right:5px;" ></i>
+                                
+                            </div>
                         </div>
                         <div class="card-carousel-wrapper">
-                        <el-button type="primary" icon="el-icon-arrow-left" @click="moveCarousel(-1)" :disabled="atHeadOfList" class="arrow-left" id="arrow-left" style="color: #FFF;background-color: gray;border-color: gray; "></el-button>
+                        <el-button type="primary" icon="el-icon-arrow-left" @click="moveCarousel(-1)" :disabled="atHeadOfList" class="arrow-left" id="arrow-left" style="color:gray;background-color:white;border-color:white; width:30px; height:30px; font-size:25px; font-weight:700;"></el-button>
                         <div class="card-carousel">
                             <div class="card-carousel--overflow-container">
                                 <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                         </div>
-                        <el-button type="primary" icon="el-icon-arrow-right" @click="moveCarousel(1)" :disabled="atEndOfList" class="arrow-right" id="arrow-right" style="color: #FFF;background-color: gray;border-color: gray; "></el-button>
+                        <el-button type="primary" icon="el-icon-arrow-right" @click="moveCarousel(1)" :disabled="atEndOfList" class="arrow-right" id="arrow-right" style="color: gray; border-color:white; background-color: white; width:30px; height:30px; font-size:25px; font-weight:700;" ></el-button>
                         </div>
                     </div>        
 <!-- zheli -->
@@ -146,7 +146,7 @@ export default {
             st:false,
             currentOffset: 0,
             windowSize: 6,
-            paginationFactor: 1290,
+            paginationFactor: 1275,
             items:[],
             videolist:"",
             headvideo:"",
@@ -168,7 +168,8 @@ export default {
             nu:0,
             vstart:"",
             vtimes:0,
-            vvtimes:""
+            vvtimes:"",
+            tool:false
    
         }
     },

@@ -1,51 +1,36 @@
 <template>
-    <div class="media-control" :class="controlStatus">
-        <div class="progress-box">
-            <!-- <el-slider v-model="currentTime" 
-            @input="progressChangeHandler(this,$event)"
-            :min="0"
-            :max="duration"></el-slider> -->
-            <MySlider :value="progressValue" :hiddenKey="controlStatus=='easy'" @value_change="value_changeHandler"/>
-        </div>
+    <div class="media-control" style="background:white;">
+       
         <div class="control-btns">
             <div class="cb-left">
+                <div class="cb-btn btn-back" style="margin-left:8px;">
+                    <img src="../../../public/houtui.png" style="width:22px;height:22px;" />  
+                </div>
                 <div class="cb-btn btn-play" v-if="isPause" @click="playHandler" >
                     <svg class="icon svg-icon" aria-hidden="true">
                         <use xlink:href="#iconbofang"></use>
-                    </svg>
-                    
+                    </svg>    
                 </div>
                 <div class="cb-btn btn-pause" v-if="!isPause" @click="pauseHandler">
                     <svg class="icon svg-icon" aria-hidden="true">
                         <use xlink:href="#iconzantingtingzhi"></use>
                     </svg>
                 </div>
-                <div class="cb-time">
-                    <span>{{curTimeStr}}</span>
-                    <span>/</span>
-                    <span>{{durTimeStr}}</span>
+                <div class="cb-btn btn-go" >
+                    <img src="../../../public/qianjin.png" style="width:22px;height:22px;" />  
                 </div>
+                <div class="cb-time">
+                    <span style="color:gray;">{{curTimeStr}}</span>
+                    <span style="color:gray;">/</span>
+                    <span style="color:gray;">{{durTimeStr}}</span>
+                </div>
+                    <div class="progress-box" style="width:439px;">
+                        <MySlider :value="progressValue"  @value_change="value_changeHandler"/>
+                    </div>
             </div>
             <div class="cb-right">
-                <div class="cb-btn btn-volume" @mouseover="vbtn_mouseover" @mouseout="vbtn_mouseout">
-                    <div class="cb-btn-click"  @click="muteClickHandler">
-                        <svg class="icon svg-icon" aria-hidden="true" v-if="volumeStatus=='level0'">
-                            <use xlink:href="#iconjingyin"></use>
-                        </svg>
-                        <svg class="icon svg-icon" aria-hidden="true" v-if="volumeStatus=='level1'">
-                            <use xlink:href="#iconshengyin2"></use>
-                        </svg>
-                        <svg class="icon svg-icon" aria-hidden="true" v-if="volumeStatus=='level2'">
-                            <use xlink:href="#iconshengyin1"></use>
-                        </svg>
-                        <svg class="icon svg-icon" aria-hidden="true" v-if="volumeStatus=='level3'">
-                            <use xlink:href="#iconshengyin"></use>
-                        </svg>
-                    </div>
-                    <el-slider class="volume-slider" v-show="showVolumeSlider" vertical height="100px" v-model="volume" :min="0" :max="1" :step="0.01"
-                    :format-tooltip="formatTooltipSlider"
-                    @input="volumeChangeHandler"
-                    tooltip-class="volume-slider-tooltip"></el-slider>
+                <div class="cb-btn btn-volume">
+                   <i class="el-icon-full-screen"  style="color:#cdcdcd;"></i>
                 </div>
             </div>
         </div>
@@ -62,10 +47,7 @@ export default {
             type:Boolean,
             default: false
         },
-        controlStatus:{
-            type:String,
-            default:'easy'
-        },
+       
         all:{
             required:true
         },
@@ -170,29 +152,22 @@ export default {
 
 
 <style lang="scss" scoped>
+
 .media-control{
     width: 100%;
-    height: 60px;
-    background-color: rgba(0,0,0,0.5);
+    height: 50px;
+    background: white;
     position: absolute;
     bottom: 0;
     z-index: 5;
     user-select: none;
 
-    .progress-box{
-        width: calc(100% - 30px);
-        height: 3px;
-        position: absolute;
-        left: 15px;
-        top: 15px;
-        z-index: 1;
-    }
 
     .control-btns{
         width: 100%;
         height: calc(100% - 20px);
         position: relative;
-        top: 20px;
+        top:10px;
         // position: absolute;
         // top: 15px;
         display: flex;
@@ -205,6 +180,14 @@ export default {
             flex: 1;
             font-size: 14px;
             color: #ffffff;
+            .progress-box{
+                width: calc(100% - 30px);
+                height: 3px;
+                left: 15px;
+                top: 15px;
+                z-index: 1;
+                margin-left: 17px;
+            }
         }
         .cb-right{
             width: 40px;

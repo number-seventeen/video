@@ -78,6 +78,7 @@ export default {
 html,body{
 	width: 100%;
 	height: 100%;
+	background: #ececec
 }
 
 *{
@@ -89,6 +90,7 @@ html,body{
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	
 	/* text-align: center; */
 	
 	/* margin-top: 60px; */
@@ -167,7 +169,13 @@ html,body{
 	border: 1px solid rgba(0, 121, 254, 1);
 }
 .vcurrent{
-	  box-shadow:0 0 15px rgb(109, 171, 236) ;
+	  box-shadow:0 0 15px rgb(15, 49, 85) ;
 	  
-  }
+}
+.media-control .control-btns .cb-left[data-v-682a5528] {
+	color: #cdcdcd;
+}
+.el-button--small, .el-button--small.is-round {
+    padding: 0px;
+}
 </style>

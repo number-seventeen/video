@@ -405,18 +405,24 @@ export default {
     height: 100%;
     position: relative;
     .head{
-          position: absolute;
-            height: 460px;
+            
+            position: absolute;
+            width: 690px;
+            height: 420px;  
             object-fit: fill;
-            z-index: 1;  
+            z-index: 1; 
+            margin-left: 17px;
+            margin-top: 17px; 
            
     } 
     .tail{
-          position: absolute;
-            
-            height: 460px;
+            position: absolute;
+           width: 690px;
+            height: 420px;  
             object-fit: fill;
-            z-index: 1;  
+            z-index: 1; 
+            margin-left: 17px;
+            margin-top: 17px; 
             
     } 
     .setboxs{
@@ -431,10 +437,13 @@ export default {
            height: 460px;
        }
        .main{
-           position: absolute;
-            height: 460px;  
+            position: absolute;
+            width: 690px;
+            height: 420px;  
             object-fit: fill;
             z-index: 1;
+            margin-left: 17px;
+            margin-top: 17px;
        }
 
        .render-img{

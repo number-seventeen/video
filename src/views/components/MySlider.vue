@@ -2,7 +2,7 @@
     <div class="my-slider" @mousedown="mousedownHandler">
         <div class="mslider-bg"></div>
         <div class="mslider-progress" :style="{width:pixelPer}"></div>
-        <div class="mslider-key" :style="{left:pixelPer}" :class="{'hidden':hiddenKey}"  @mousedown="mousedownHandler"></div>
+        <div class="mslider-key" :style="{left:pixelPer}"  @mousedown="mousedownHandler"></div>
     </div>
 </template>
 
@@ -135,8 +135,8 @@ export default {
         &:before{
             content: '';
             position: absolute;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background-color: #FFF;
             border-radius: 50%;
             box-shadow: 0px 0px 4px #4e4e4e;
