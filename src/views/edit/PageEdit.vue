@@ -8,12 +8,33 @@
         <div class="page-content">
             <div class="page-content2">
                 <div class="page-area area2">
+                    <div class="zimus" @click="waterout()">
+                        <div style="width:10px; font-size:12px; margin-left:5px; margin-top:12px;">添加片头片尾</div>
+                       
+                    </div>
+                    <div class="wateredit">
+                            <div class="suiyin">
+                                <div class="suiyin_head">
+                                    <div class="suiyin_set">添加片头片尾、水印：</div>
+                                </div>
+                                <div class="suiyin_switch">
+                                    <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=50 ></el-switch>    
+                                </div>
+                                <label>模版标题:</label>
+                                <div style="display:flex;">
+                                    <p>默认片头片尾</p>
+                                    <span class="cwater" @click="titleset">更换</span>
+                                </div>
+                                
+                                
+                            </div>
+                    </div>
                     <div class="view_box">
                          <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
                     </div>
 <!-- 上面是播放器 -->
-                    <div class="set_box" v-show="tool"> 
-                        <div class="zhimu">
+                    <!-- <div class="set_box" v-show="tool"> 
+                        <div class="zhimu" v-show="zimuout">
                             <div class="set">
                                 <div class="zhimu_set">字幕设置: <i class="tip el-icon-warning" @mouseover="tipshow()" @mouseout="tiphide()"><div class="tips" v-if="s==true">已选视频中若未包含智能识别和智能翻译数据，则自动忽略，并在列表中标识展示！</div></i> </div>
                                 <div class="zhimu_tool">
@@ -36,21 +57,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="suiyin">
-                            <div class="suiyin_head">
-                                <div class="suiyin_set">片头尾设置</div>
-                                <i class="set_icon el-icon-s-tools" @click="titleset"></i>
-                            </div>
-                            <div class="suiyin_switch">
-                                <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=70 ></el-switch>
-                                <label>自动加片头片尾水印</label>
-                    
-                            </div>
-                            
-                        </div>
-                    </div>
+                        
+                    </div> -->
                 </div>
-
+<!-- 字幕工具底部 -->
                 <div class="page-area area3">                   
                 </div>
 
@@ -96,7 +106,10 @@
                                         <video v-bind:src="item.url"  class="choosen" style="width: 185px;height: 130px; object-fit:fill; border-radius: 4px;"></video>
                                     </div>
                                     <div class="bigadd" @click="addClickHandler">
-                                        <i class="el-icon-plus" ></i>
+                                        <div style="width:185px; height:130px;">
+                                            <i class="el-icon-plus" style="margin-left:15px;"></i>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +159,7 @@ export default {
             st:false,
             currentOffset: 0,
             windowSize: 6,
-            paginationFactor: 1275,
+            paginationFactor: 1270,
             items:[],
             videolist:"",
             headvideo:"",
@@ -169,7 +182,9 @@ export default {
             vstart:"",
             vtimes:0,
             vvtimes:"",
-            tool:false
+            tool:false,
+            waters:true,
+            zimuout:false
    
         }
     },
@@ -222,18 +237,16 @@ export default {
              this.times=this.curSelects[this.selected].duration
              this.vvtimes=this.secTotime(this.times/1000) 
              this.items.push({url:this.videolist,id:this.selected,dur:this.vvtimes})
-                 
-              
+                    
         }
-
         
-        this.curwidth=this.curSelects.length-1
         if(this.curSelects.length>0){
-             if(this.curSelects[this.curwidth].width=="1080" ){
-                this.setbox=true
+             if(parseInt(this.curSelects[0].width)>1080){
+                this.setbox=false
             }
             this.vstart=this.items[0].url
         }
+          
         
         
     },
@@ -337,17 +350,19 @@ export default {
             f.setAttribute("src",u) 
             this.nu=index
             if(this.curSelects.length>0){
-                if(this.curSelects[index].width=="1920" ){
+                 console.log(this.curSelects[index].width)
+                if(parseInt(this.curSelects[index].width)>1080 ){
                     this.setbox=false
                 }
-                else if(this.curSelects[index].width=="1080"){
+                else if(parseInt(this.curSelects[index].width)<=1080){
+                   
                     this.setbox=true
                 }
-                if (this.values==true) {
-                    this.addwater()
-                } 
+                
             }
-            
+            if (this.values==true) {
+                    this.addwater()
+            } 
             
         },
 
@@ -463,8 +478,10 @@ export default {
         move_show(index){
             document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:none;")
             document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:none;")
+        },
+        waterout(){
+            this.waters=true
         }
-       
         
 
             

@@ -53,7 +53,7 @@
             @volume-change="mc_volumeHandler"
             @play="mc_playHandler"
             @pause="mc_pauseHandler"
-            @seek="mc_seekHandler"  :mainbox="mainbox" :all="all"  :pvalue="pvalue" :ptailvalue="ptailvalue" @mainboxtime="getmainbox"/>
+            @seek="mc_seekHandler"  :mainbox="mainbox" @gogov="getgogov" :all="all"  :pvalue="pvalue" :ptailvalue="ptailvalue" @mainboxtime="getmainbox"/>
     </div>
 </template>
 
@@ -145,6 +145,8 @@ export default {
             whichpaly:"",
             currentTime:0,
             mainbox:"",
+            va:0
+          
 
 
            
@@ -208,6 +210,10 @@ export default {
                 this.video.play()   
             }    
         },
+        getgogov(m){
+            this.va=m
+            // console.log("nnn",this.va)
+        },
         enterframeHandler(){
             this.currentTime += 40;
             let v = this.currentTime;
@@ -235,7 +241,7 @@ export default {
                     this.$refs.tailVideo.play();
                 }
             }
-            this.$refs.mediaControl.setCurrentTime(v/1000);
+            this.$refs.mediaControl.setCurrentTime((v+0.07)/1000);
             if(v>this.all-40){
                 this.pause();
             }
@@ -407,7 +413,6 @@ export default {
     .head{
             
             position: absolute;
-            width: 690px;
             height: 420px;  
             object-fit: fill;
             z-index: 1; 
@@ -417,7 +422,7 @@ export default {
     } 
     .tail{
             position: absolute;
-           width: 690px;
+           
             height: 420px;  
             object-fit: fill;
             z-index: 1; 
@@ -438,7 +443,7 @@ export default {
        }
        .main{
             position: absolute;
-            width: 690px;
+            
             height: 420px;  
             object-fit: fill;
             z-index: 1;

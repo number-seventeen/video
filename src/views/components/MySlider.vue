@@ -17,6 +17,9 @@ export default {
             type:Boolean,
             default:false
         },
+        gogo:{
+            required:true
+        }
         // duration:{
         //     type:Number,
         //     default:0
@@ -39,10 +42,16 @@ export default {
 	        deep: true,
             handler:function (newVal,oldVal){
                 this.sliderValue = newVal;
-                
-                
-                 
-                
+                // if(this.gogo==true) {
+                //     this.sliderValue=this.sliderValue+0.07   
+                // }   
+            }
+        },
+        gogo:{
+            immediate:true,
+            handler:function(){
+                this.mmm()
+                     
             }
         }
     },
@@ -51,31 +60,25 @@ export default {
             this.sliderValue = Math.min(1,Math.max(0,v));
             
         },
-        tt(){
-           
+        mmm(){
+            
         },
         mousedownHandler(event){
             let e = event ? event : window.event;
             e.preventDefault();
             e.stopPropagation();
-
             let self = this;
             self.isMouseDown = true;
-
             let mouseX = this.$el.getBoundingClientRect().left;//event.clientX;
             let rootW = this.$el.offsetWidth;
             let recordX = event.clientX;
             let record = this.currentTime;
-        
             document.addEventListener("mousemove",bodymousemove);
             document.addEventListener("mouseup",bodymouseup);
 
             self.sliderValue = Math.min(1,Math.max(0,(event.clientX-mouseX)/rootW));
             self.$emit('value_change',self.sliderValue)
             
-            
-
-
             function bodymousemove(event){
                 event.preventDefault();
                 event.stopPropagation();

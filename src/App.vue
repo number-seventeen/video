@@ -134,15 +134,15 @@ html,body{
 }
 
 .switchon .el-switch__core{
-    height: 30px;
+    height: 24px;
 	border-radius: 50px;
-	padding: 5px;
+	
 	
 }
 .switchon .el-switch__core::after{
-	width: 20px;
-    height: 20px;
-	margin-top: 3px;
+	width: 18px;
+    height: 18px;
+	margin-top: 1px;
 	margin-left: 2px;
 	
 	
@@ -175,7 +175,5 @@ html,body{
 .media-control .control-btns .cb-left[data-v-682a5528] {
 	color: #cdcdcd;
 }
-.el-button--small, .el-button--small.is-round {
-    padding: 0px;
-}
+
 </style>

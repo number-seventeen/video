@@ -49,25 +49,25 @@ a{
                 height: 500px;
                 display: flex;
                 .view_box{
-                    width: 725px;
+                    position: absolute;
+                    left: 320px;
+                    width: 781px;
                     height: 485px;
                     background:white;
                     flex-shrink: 0;
                     margin-right: 33px;
                     padding: 0;
                     box-shadow: 0 0 8px rgb(189, 189, 189);
-                    margin-left: 270px;
                     margin-top: 12px;
                 }
                 .set_box{
-                    width:411px;
-                    height:460px;
+                    width:170px;
+                    height:135px;
                     border:1px solid black;
                     flex-shrink: 0;
-                    padding:0 35px 0 35px ;
+                    padding:0 5px 0 10px ;
                     background: white;
-                    .zhimu{
-                        
+                    .zhimu{ 
                         .set{
                             margin-top: 30px;
                             display: flex;
@@ -125,30 +125,7 @@ a{
                             }
                         }
                     }
-                    .suiyin{
-                        margin-top: 30px;
-                        border-top: 1px dashed gray;;
-                        .suiyin_head{
-                            display: flex;
-                            margin-top:15px ;
-                            .suiyin_set{
-                                font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
-                                font-weight: 700;
-                                font-style: normal;
-                                font-size: 18px;
-                            }
-                            .set_icon{
-                                font-size: 22px;
-                                margin-left: 200px;
-                            }
-                        } 
-                        .suiyin_switch{
-                            margin-top: 15px;
-                            label{
-                                margin-left: 15px;
-                            }
-                        }
-                    }
+                    
                     
                 }
                 
@@ -220,21 +197,32 @@ body {
     align-items: center;
     justify-content: center;
     color: #666a73;
-    width: 1276px;
+    width: 1260px;
     margin-left: 25px;
   }
   
   .card-carousel {
     display: flex;
     justify-content: center;
-    width: 1276px;
+    width: 1260px;
     height: 160px;
     padding-left:4px;
     
     
   }
   .card-carousel--overflow-container {
-    overflow: hidden;
+    overflow-x:hidden;
+    overflow-y:hidden;
+  }
+  .card-carousel--overflow-container:hover {
+    overflow-x:scroll;
+    overflow-y:hidden;
+  }
+  .card-carousel--overflow-container::-webkit-scrollbar-thumb{
+    background: rgb(226, 225, 225);
+  }
+  .card-carousel--overflow-container::-webkit-scrollbar-track{
+    background: rgb(224, 224, 224);
   }
   .card-carousel-cards {
     display: flex;
@@ -247,11 +235,12 @@ body {
   .bigadd{
     width:185px;
     height: 130px;
-    background: #e0e0e0;
-    color: rgb(180, 179, 179);
+    background: #f7f7f7;
+    color: rgb(212, 209, 209);
     font-size: 50px;
     text-align: center;
     line-height: 130px;
+    
   }
   .card-carousel--card{
     height: 130px;
@@ -303,7 +292,7 @@ body {
     padding: 0;
   }
   .card-carousel-cards .card-carousel--card {
-    margin-right:28px;
+    margin-right:27px;
     cursor: pointer;
     background-color: #fff;
     border-radius: 4px;
@@ -323,14 +312,14 @@ body {
         font-weight: 900;
         position: absolute;
         z-index: 10;
-        margin-left: -1310px; 
+        margin-left: -1305px; 
         margin-top: -3px; 
         padding: 2px;   
     }
   .arrow-right{
       font-size: 20px;
       position: absolute;
-      margin-left: 1278px;
+      margin-left: 1292px;
       font-weight: 900;
       padding: 2px;
       margin-top: -3px; 
@@ -360,6 +349,62 @@ body {
     margin-left:5px;
     margin-top: 3px;
     font-weight: 550;
+  }
+  .el-button--small, .el-button--small.is-round {
+    padding: 0px;
+  }
+  .zimus{
+    position: relative;
+    margin-left:-63px;
+    margin-top: 35px;
+    width: 25px;
+    height: 125px;
+    left: 18px;
+    background:#ececec;
+    cursor: pointer;
+  } 
+  .wateredit{
+    margin-top: 35px;
+    width:150px;
+    height:125px;
+    margin-left: 18px;
+    border:3px solid #ececec;
+    flex-shrink: 0;
+    padding:0 5px 0 10px ;
+    background: white;
+    .suiyin{
+      margin-top: 10px;
+      .suiyin_head{
+          display: flex;
+          margin-top:10px ;
+          .suiyin_set{
+              font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+              font-weight: 700;
+              font-style: normal;
+              font-size: 12px;
+          }
+      } 
+      .suiyin_switch{
+          margin-top: 5px;
+          margin-bottom: 15px;
+        
+      }
+      label{
+        font-weight: 700;
+        font-size: 12px;
+      }
+      p{
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+      }
+      .cwater{
+        font-size: 12px;
+        margin-left: 10px;
+        color: rgb(99, 184, 218);
+        cursor: pointer;
+      }
+    }
   }
   
   

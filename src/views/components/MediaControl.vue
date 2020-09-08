@@ -6,26 +6,26 @@
                 <div class="cb-btn btn-back" style="margin-left:8px;">
                     <img src="../../../public/houtui.png" style="width:22px;height:22px;" />  
                 </div>
-                <div class="cb-btn btn-play" v-if="isPause" @click="playHandler" >
+                <div class="cb-btn btn-play" v-if="isPause" @click="playHandler" id="pplay">
                     <svg class="icon svg-icon" aria-hidden="true">
                         <use xlink:href="#iconbofang"></use>
                     </svg>    
                 </div>
-                <div class="cb-btn btn-pause" v-if="!isPause" @click="pauseHandler">
+                <div class="cb-btn btn-pause" v-if="!isPause" @click="pauseHandler" id="ppause">
                     <svg class="icon svg-icon" aria-hidden="true">
                         <use xlink:href="#iconzantingtingzhi"></use>
                     </svg>
                 </div>
-                <div class="cb-btn btn-go" >
+                <div class="cb-btn btn-go"  @click="goit()">
                     <img src="../../../public/qianjin.png" style="width:22px;height:22px;" />  
                 </div>
-                <div class="cb-time">
+                <div class="cb-time" style="margin-left:5px;">
                     <span style="color:gray;">{{curTimeStr}}</span>
                     <span style="color:gray;">/</span>
                     <span style="color:gray;">{{durTimeStr}}</span>
                 </div>
-                    <div class="progress-box" style="width:439px;">
-                        <MySlider :value="progressValue"  @value_change="value_changeHandler"/>
+                    <div class="progress-box" style="width:486px;">
+                        <MySlider :value="progressValue"  @value_change="value_changeHandler" :gogo="gogo" />
                     </div>
             </div>
             <div class="cb-right">
@@ -76,6 +76,7 @@ export default {
             // durTimeStr:'00:00:00',
             showVolumeSlider: false,
             progressValue:0,//0-1
+            gogo:true,
         }
     },
     
@@ -96,15 +97,39 @@ export default {
             
         }
     },
+    mounted:function () {
+            this.monitor();
+    },
     methods:{
         setCurrentTime(v){
             this.currentTime=v
             if(this.mainbox=="nochange"){
                 this.$emit("mainboxtime",this.currentTime)
-            }
+            } 
             this.progressValue = this.duration == 0?0:(v/this.duration);
+            
+            
         },
-        
+        monitor:function(){
+                var that = this;
+                var plays=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[1]
+                document.onkeydown = function(e) {   //按下回车提交
+                    let key = window.event.keyCode;
+                    //事件中keycode=13为回车事件
+                    if (key == 32&&plays.getAttribute("id")=="pplay") {
+                        that.playHandler();
+                    }
+                    else if(key == 32&&plays.getAttribute("id")=="ppause"){
+                        that.pauseHandler();
+                    }
+                };
+        },
+        goit(){
+            this.gogo=true
+            this.$emit("gogov",this.gogo)  
+            
+             
+        },
         setDuration(v){
             this.duration = v;
         },
@@ -133,9 +158,9 @@ export default {
         },
         value_changeHandler(v){
             // console.log('value_changeHandler',v,event)
-            this.$emit('seek',v*this.duration);
-            
+            this.$emit('seek',v*this.duration);    
         },
+       
         muteClickHandler(){
             this.isMute = !this.isMute;
             if(this.isMute){
@@ -145,7 +170,8 @@ export default {
                 this.volume = this.recordVolume || 0.5;
             }
             this.$emit('volume_change',this.volume);
-        }
+        },
+        
     }
 }
 </script>
@@ -186,7 +212,7 @@ export default {
                 left: 15px;
                 top: 15px;
                 z-index: 1;
-                margin-left: 17px;
+                margin-left: 21px;
             }
         }
         .cb-right{
