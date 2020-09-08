@@ -53,7 +53,7 @@
             @volume-change="mc_volumeHandler"
             @play="mc_playHandler"
             @pause="mc_pauseHandler"
-            @seek="mc_seekHandler"  :mainbox="mainbox" @gogov="getgogov" :all="all"  :pvalue="pvalue" :ptailvalue="ptailvalue" @mainboxtime="getmainbox"/>
+            @seek="mc_seekHandler"  :mainbox="mainbox" @gogov="getgogov" @gogoes="getgoes" :all="all"  :pvalue="pvalue" :ptailvalue="ptailvalue" @mainboxtime="getmainbox"/>
     </div>
 </template>
 
@@ -214,6 +214,43 @@ export default {
             this.va=m
             // console.log("nnn",this.va)
         },
+        getgoes(v){
+            v=v*1000
+            var ms=v
+            if(this.signal=="ischange"){
+                this.headtime=document.getElementsByClassName("head")[0].duration*1000
+                this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
+                this.maintime=document.getElementsByClassName("main")[0].duration*1000
+                this.all=this.headtime+this.tailtime+this.maintime
+                v = Math.min(this.all,Math.max(0,v));
+                this.currentTime = v;
+                if(v>=0 && v<this.headtime){
+                    this.one = true;
+                    this.two = false;
+                    this.three = false;
+                    this.$refs.headVideo.currentTime = v/1000;
+                }else if(v>= this.headtime && v < (this.headtime+this.maintime)){
+                    console.log("gogo")
+                    this.one = false;
+                    this.two = true;
+                    this.three = false;
+                    this.$refs.mainVideo.currentTime = (v-this.headtime)/1000;
+                    console.log("main",this.$refs.mainVideo.currentTime)
+                    this.mas=((this.currentTime/1000)-(this.headtime/1000))
+                }else if(v>= (this.headtime+this.maintime) && v<= this.all){
+                    this.one = false;
+                    this.two= false;
+                    this.three = true;
+                    this.$refs.tailVideo.currentTime = (v-(this.headtime+this.maintime))/1000;
+                }
+                this.$refs.mediaControl.setCurrentTime(v/1000);
+                
+            }
+            else{
+                this.$refs.mediaControl.setCurrentTime(v/1000)
+                this.$refs.mainVideo.currentTime = v/1000;
+            }
+        },
         enterframeHandler(){
             this.currentTime += 40;
             let v = this.currentTime;
@@ -241,7 +278,7 @@ export default {
                     this.$refs.tailVideo.play();
                 }
             }
-            this.$refs.mediaControl.setCurrentTime((v+0.07)/1000);
+            this.$refs.mediaControl.setCurrentTime(v/1000);
             if(v>this.all-40){
                 this.pause();
             }
@@ -260,6 +297,7 @@ export default {
             }
         },
         seek(v){ 
+            console.log("tv",v)
             if(this.signal=="ischange"){
                 this.headtime=document.getElementsByClassName("head")[0].duration*1000
                 this.tailtime=document.getElementsByClassName("tail")[0].duration*1000

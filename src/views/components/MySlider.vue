@@ -17,13 +17,9 @@ export default {
             type:Boolean,
             default:false
         },
-        gogo:{
+        goes:{
             required:true
         }
-        // duration:{
-        //     type:Number,
-        //     default:0
-        // }
     },
     
     data(){
@@ -42,25 +38,13 @@ export default {
 	        deep: true,
             handler:function (newVal,oldVal){
                 this.sliderValue = newVal;
-                // if(this.gogo==true) {
-                //     this.sliderValue=this.sliderValue+0.07   
-                // }   
+                
             }
         },
-        gogo:{
-            immediate:true,
-            handler:function(){
-                this.mmm()
-                     
-            }
-        }
     },
     methods:{
         setValue(v){
             this.sliderValue = Math.min(1,Math.max(0,v));
-            
-        },
-        mmm(){
             
         },
         mousedownHandler(event){

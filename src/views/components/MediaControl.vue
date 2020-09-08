@@ -3,7 +3,7 @@
        
         <div class="control-btns">
             <div class="cb-left">
-                <div class="cb-btn btn-back" style="margin-left:8px;">
+                <div class="cb-btn btn-back" style="margin-left:8px;" @click="goback()">
                     <img src="../../../public/houtui.png" style="width:22px;height:22px;" />  
                 </div>
                 <div class="cb-btn btn-play" v-if="isPause" @click="playHandler" id="pplay">
@@ -25,7 +25,7 @@
                     <span style="color:gray;">{{durTimeStr}}</span>
                 </div>
                     <div class="progress-box" style="width:486px;">
-                        <MySlider :value="progressValue"  @value_change="value_changeHandler" :gogo="gogo" />
+                        <MySlider :value="progressValue"  @value_change="value_changeHandler" :goes="goes" />
                     </div>
             </div>
             <div class="cb-right">
@@ -59,7 +59,8 @@ export default {
     },
     watch:{
         currentTime:{
-            handler:function(){
+            handler:function(newVal){
+                this.cc=newVal
                 
             }
         },
@@ -77,6 +78,9 @@ export default {
             showVolumeSlider: false,
             progressValue:0,//0-1
             gogo:true,
+            goes:0,
+            ttt:0,
+            cc:0,
         }
     },
     
@@ -99,20 +103,23 @@ export default {
     },
     mounted:function () {
             this.monitor();
+            
+            
     },
     methods:{
         setCurrentTime(v){
+            // console.log("vvv", this.progressValue)
             this.currentTime=v
             if(this.mainbox=="nochange"){
                 this.$emit("mainboxtime",this.currentTime)
             } 
-            this.progressValue = this.duration == 0?0:(v/this.duration);
-            
-            
+            this.progressValue = this.duration == 0?0:(v/this.duration);   
         },
         monitor:function(){
                 var that = this;
                 var plays=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[1]
+                var backs=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[0]
+                var gos=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[2]
                 document.onkeydown = function(e) {   //按下回车提交
                     let key = window.event.keyCode;
                     //事件中keycode=13为回车事件
@@ -122,13 +129,49 @@ export default {
                     else if(key == 32&&plays.getAttribute("id")=="ppause"){
                         that.pauseHandler();
                     }
+                    if (key == 37&&backs.getAttribute("class")=="cb-btn btn-back") {
+                        that.goback();
+                    }
+                    else if(key == 39&&gos.getAttribute("class")=="cb-btn btn-go"){
+                        that.goit()
+                    }
                 };
         },
         goit(){
+            this.ttt=this.ttt+1  
             this.gogo=true
+            if(this.goes<1){
+                if(this.ttt>=1){
+                   console.log("cu",this.cc)
+                    
+                    this.goes=(this.cc/this.duration)+0.02
+                }  
+            }
+            else if(this.goes>1){
+                 this.goes=1
+            }
             this.$emit("gogov",this.gogo)  
+            this.$emit("gogoes",this.goes*this.duration)
             
-             
+                 
+        },
+        goback(){
+            this.ttt=this.ttt+1 
+            this.gogo=false
+            if(this.ttt=1){
+                this.goes=0.015
+            }
+            if(this.goes>=0.015){
+    
+                this.goes=(this.cc/this.duration)-0.015 
+         
+            }
+            if(this.goes<0.015){
+                   this.goes=0 
+            }
+                
+            this.$emit("gogov",this.gogo)  
+            this.$emit("gogoes",this.goes*this.duration)
         },
         setDuration(v){
             this.duration = v;
