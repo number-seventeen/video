@@ -30,7 +30,7 @@
             </div>
             <div class="cb-right">
                 <div class="cb-btn btn-volume">
-                   <i class="el-icon-full-screen"  style="color:#cdcdcd;"></i>
+                   <i class="el-icon-full-screen"  style="color:#cdcdcd;" @click="FullScreen"></i>
                 </div>
             </div>
         </div>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import screenfull from 'screenfull'
 import MySlider from './MySlider';
 import Utils from '@/libs/Utils.js';
 export default {
@@ -214,6 +215,20 @@ export default {
             }
             this.$emit('volume_change',this.volume);
         },
+        FullScreen(){
+            this.$parent.goFullScreen()
+        },
+        // clickFullscreen(){
+        //     this.fulls=true
+        //     if (!screenfull.isEnabled) {
+        //     this.$message({
+        //         message: 'you browser can not work',
+        //         type: 'warning'
+        //     })
+        //     return false
+        //     }
+        //     screenfull.toggle()
+        // }
         
     }
 }

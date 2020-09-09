@@ -5,6 +5,7 @@ import Login from '../views/login/Login.vue';
 import PageSource from '../views/source/PageSource.vue';
 import PageEdit from '../views/edit/PageEdit.vue';
 import Playprograss from '../views/edit/Playprograss.vue'
+import Pagewater from '../views/edit/Pagewater.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -18,6 +19,12 @@ const routes = [
 		path: '/Login',
 		name: 'Login',
 		component: Login,
+		// redirect:'/',
+	},
+	{
+		path: '/Pagewater',
+		name: 'Pagewater',
+		component: Pagewater,
 		// redirect:'/',
 	},
 	{

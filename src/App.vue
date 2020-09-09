@@ -78,7 +78,9 @@ export default {
 html,body{
 	width: 100%;
 	height: 100%;
-	background: #ececec
+	background: #ececec;
+	
+
 }
 
 *{
@@ -97,6 +99,7 @@ html,body{
 	width: 100%;
 	height: 100%;
 	position: relative;
+	
 }
 /** 修改浏览器默认滚动条样式 **/
 ::-webkit-scrollbar-track-piece {

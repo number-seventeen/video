@@ -433,7 +433,18 @@ export default {
         },
         getmainbox(maincu){
             this.mas=maincu
+        },
+        goFullScreen(){
+               var ele = document.getElementsByClassName("main")[0];
+                if (ele.requestFullscreen) {
+                    ele.requestFullscreen();
+                } else if (ele.mozRequestFullScreen) {
+                    ele.mozRequestFullScreen();
+                } else if (ele.webkitRequestFullScreen) {
+                    ele.webkitRequestFullScreen();
+                }
         }
+
             
     }
 }

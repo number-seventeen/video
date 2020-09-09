@@ -1,12 +1,17 @@
 <template>
     <div class="page-edit">
+        <div class="full">
+           <div class="v_box">
+                <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+            </div>  
+        </div>
         <MainHeader :hasBack="true"  @backHandler="backHandler" :hasTaskBtn="false" :hasHelpBtn="false">
-            <div class="t-head">
+            <!-- <div class="t-head" >
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="剪切合并" name="first"></el-tab-pane>
                     <el-tab-pane label="添加互动索引" name="second"></el-tab-pane>
                 </el-tabs>
-            </div>
+            </div> -->
             <div class="edit-top-btns">
                 <el-button type="primary" size="small" @click="renderHandler" class="finish" style="width:50px; height:25px;"><span>合成</span></el-button>
             </div>
@@ -15,44 +20,23 @@
         <div class="page-content">
             <div class="page-content2">
                 <div class="page-area area2">
-                    <div class="all-edit" @mouseover="alledit()"  @mouseout="noalledit()" >
-                      <i class="el-icon-sort"></i>
+                    <div class="view_box">
+                         <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
                     </div>
-                    <div class="all-tip" v-show="tips"><div class="arrow"></div><span>去完整编辑模式</span></div>
-                    <div class="suis" @click="waterout()">
-                        <div style="width:10px; font-size:12px; margin-left:5px; margin-top:12px;">添加片头片尾</div>   
-                    </div>
-
-                    <div class="wateredit" v-show="waters">
-                            <div class="suiyin">
-                                <div class="suiyin_head">
-                                    <div class="suiyin_set">添加片头片尾、水印：</div>
-                                </div>
-                                <div class="suiyin_switch">
-                                    <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=50 ></el-switch>    
-                                </div>
-                                <label>模版标题:</label>
-                                <div style="display:flex;">
-                                    <p>默认片头片尾</p>
-                                    <span class="cwater" @click="titleset">更换</span>
-                                </div>
-                                
-                                
-                            </div>
-                    </div>
-                    <div class="zhimus" @click="zhimuout()">
-                        <div style="width:10px; font-size:12px; margin-left:5px; margin-top:8px;">添加字幕</div>   
-                    </div>
-                    <div class="set_box" v-show="zzhimu">       
+<!-- 上面是播放器 -->
+                    <div class="set_box"> 
                         <div class="zhimu">
                             <div class="set">
                                 <div class="zhimu_set">字幕设置: <i class="tip el-icon-warning" @mouseover="tipshow()" @mouseout="tiphide()"><div class="tips" v-if="s==true">已选视频中若未包含智能识别和智能翻译数据，则自动忽略，并在列表中标识展示！</div></i> </div>
+                                <div class="zhimu_tool">
+                                    <a href="">智能字幕工具</a>
+                                    <i class="el-icon-arrow-right" style=" margin-left: 5px; font-size: 16px; font-weight: 600;"></i>
+                                </div>
                             </div>
                             <div class="zhimu_auto">
-                                <span style="font-size:12px;font-weight:600;">添加默认字幕 </span>
-                                <el-switch class="switchon" v-model="value" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=50></el-switch>
-                                
-                                <!-- <div class="choose" >
+                                <el-switch class="switchon" v-model="value" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=60></el-switch>
+                                <label>自动加字幕</label>
+                                <div class="choose" >
                                     <ul>
                                         <el-radio-group v-model="radio" v-if="value==true">
                                             <li><el-radio :label="3">仅显示源语种</el-radio></li>
@@ -60,15 +44,22 @@
                                             <li><el-radio :label="9">源语种+译文同时显示</el-radio></li>
                                         </el-radio-group>
                                     </ul>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
-                        
+                        <div class="suiyin">
+                            <div class="suiyin_head">
+                                <div class="suiyin_set">片头尾设置</div>
+                                <i class="set_icon el-icon-s-tools" @click="titleset"></i>
+                            </div>
+                            <div class="suiyin_switch">
+                                <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=60></el-switch>
+                                <label>自动加片头片尾水印</label>
+                    
+                            </div>
+                            
+                        </div>
                     </div>
-                    <div class="view_box">
-                         <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
-                    </div>
-<!-- 上面是播放器 -->
                 </div>
 <!-- 字幕工具底部 -->
                 <div class="page-area area3">                   
@@ -134,6 +125,7 @@
 
         <DialogSelectSource ref="dialogSelectSource" />
         <AmTitletailSeting ref="titleTailSet"/>
+        <!-- <Pagewater ref="page" :videourl="pages" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" /> -->
     </div>
 </template>
 
@@ -143,12 +135,13 @@ import DialogSelectSource from '../components/DialogSelectSource'
 import {mapState,mapMutations, Store} from 'vuex';
 import global from '@/plugins/global.js';
 import Playprograss from './Playprograss.vue'
+import Pagewater from './Pagewater.vue'
 import VideoPlayer from '../components/VideoPlayer'
 import AmTitletailSeting from '../components/titleTail/AmTitletailSeting'
 
 export default {
     inject:['reload'],
-    components:{MainHeader,Playprograss,DialogSelectSource,VideoPlayer,AmTitletailSeting},
+    components:{MainHeader,Pagewater,Playprograss,DialogSelectSource,VideoPlayer,AmTitletailSeting},
     props:{
        
     },
@@ -190,6 +183,8 @@ export default {
             activeName: 'first',
             tips:false,
             znum:0,
+            pages:""
+           
    
         }
     },
@@ -236,7 +231,8 @@ export default {
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
         this.curSelects = this.$store.state.appStore.curSelects;
-        console.log(this.curSelects)
+        this.pages=this.curSelects[0].preUrl
+        
         // this.vstart=this.curSelects[0].preUrl
         for (this.selected = 0; this.selected < this.curSelects.length; this.selected++) {
              this.videolist=this.curSelects[this.selected].preUrl
@@ -246,10 +242,13 @@ export default {
              this.items.push({url:this.videolist,id:this.selected,dur:this.vvtimes,title:this.titie})
                     
         }
-        
         if(this.curSelects.length>0){
-             if(parseInt(this.curSelects[0].width)>1080){
+            console.log(this.curSelects[0].width)
+            if(parseInt(this.curSelects[0].width)>1080){
                 this.setbox=false
+            }
+            else if(parseInt(this.curSelects[0].width)<=1080){
+                this.setbox=true
             }
             this.vstart=this.items[0].url
         }

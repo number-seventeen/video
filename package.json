@@ -12,6 +12,7 @@
     "core-js": "^3.6.4",
     "font-awesome": "^4.7.0",
     "js-md5": "^0.7.3",
+    "screenfull": "^5.0.2",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
     "vue": "^2.6.11",
