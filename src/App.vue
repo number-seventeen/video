@@ -119,7 +119,7 @@ html,body{
         font-weight: bold;
     }
     .el-tabs__active-bar{
-        height: 3px;
+		height: 3px;
     }
 }
 .el-color-picker__panel{
@@ -175,5 +175,35 @@ html,body{
 .media-control .control-btns .cb-left[data-v-682a5528] {
 	color: #cdcdcd;
 }
-
+.t-head #tab-second{
+	padding-left: 50px;
+	height: 35px;
+	
+	
+}
+.t-head .el-tabs {
+	height: 40px;
+}
+.t-head .el-tabs__active-bar{
+	background-color: rgb(130, 184, 245);
+	height: 2px;
+	top: 33px;
+	
+	
+}
+.t-head .el-tabs__item.is-active{
+	color: rgb(130, 184, 245);
+	
+}
+.t-head .el-tabs__item{
+	font-size: 12px;
+	letter-spacing: 0.1em;
+	outline: none;
+	height: 38px;
+	
+	
+}
+.t-head .el-tabs__item:hover{
+	color: rgb(130, 184, 245);
+}
 </style>

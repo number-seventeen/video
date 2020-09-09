@@ -21,18 +21,27 @@ a{
         align-items: center;
         justify-content: flex-end;
         .finish{
-            background: rgba(0, 121, 254, 1);
-            border: 1px solid rgba(0, 121, 254, 1);
+            background:  rgb(88, 165, 253);
+            border: 1px solid  rgb(88, 165, 253);
             width: 80px;
 
         }
        
+    }
+    .t-head{
+      width: 230px;
+      font-size: 12px;
+      height: 40px;  
+      position: absolute;  
+      margin-left: -140px;
     }
 
     .page-content{
         width: 100%;
         height:760px;
         margin-top: 15px;
+        box-shadow: 0 0 2px rgb(168, 168, 168);
+        
         .page-content2{
             width: 100%;
             height: 760px;
@@ -50,7 +59,7 @@ a{
                 display: flex;
                 .view_box{
                     position: absolute;
-                    left: 320px;
+                    left: 310px;
                     width: 781px;
                     height: 485px;
                     background:white;
@@ -61,24 +70,27 @@ a{
                     margin-top: 12px;
                 }
                 .set_box{
-                    width:170px;
-                    height:135px;
-                    border:1px solid black;
+                    position: absolute;
+                    margin-top: 170px;
+                    margin-left: -20px;
+                    border: 3px solid #ececec;
+                    width:150px;
+                    height:80px;
                     flex-shrink: 0;
                     padding:0 5px 0 10px ;
-                    background: white;
+                    background:white;
                     .zhimu{ 
                         .set{
-                            margin-top: 30px;
+                            margin-top: 10px;
                             display: flex;
                             .zhimu_set{
-                                margin-right: 120px;
                                 font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
                                 font-weight: 700;
                                 font-style: normal;
-                                font-size: 18px;
+                                font-size: 12px;
+                                margin-bottom: 15px;
                                 .tips{
-                                    width: 270px;
+                                    width: 150px;
                                     height: 63px;
                                     padding: 8px;
                                     letter-spacing: 0.05em;
@@ -86,47 +98,13 @@ a{
                                     margin-left: 10px;
                                     position: absolute;
                                     background:rgba(215, 215, 215, 1);
-                                    font-size:14px;
-                                    
-                                    
+                                    font-size:12px;
+                                        
                                 }
-                            }
-                            .zhimu_tool a:hover{
-                                font-family: '微软雅黑';
-                                font-weight: 400;
-                                font-style: normal;
-                                font-size: 16px;
-                                color:rgba(0, 121, 254, 1) ;
-                                
-                                
-                            }
-                            .el-icon-arrow-right:hover{
-                                margin-left: 5px;
-                                font-size: 16px;
-                                font-weight: 600;
-                                color:rgba(0, 121, 254, 1);
-                                
                             }
 
                         }
-                        .zhimu_auto{
-                            margin-top: 20px;
-                            label{
-                                margin-left: 15px;
-                            }
-                            .choose{
-                                
-                                margin-top: 10px;
-                                li{
-                                    margin-top: 30px;
-                                }
-                            
-                                
-                            }
-                        }
-                    }
-                    
-                    
+                    }    
                 }
                 
             }
@@ -219,7 +197,7 @@ body {
     overflow-y:hidden;
   }
   .card-carousel--overflow-container::-webkit-scrollbar-thumb{
-    background: rgb(226, 225, 225);
+    background: rgb(206, 204, 204);
   }
   .card-carousel--overflow-container::-webkit-scrollbar-track{
     background: rgb(224, 224, 224);
@@ -353,18 +331,71 @@ body {
   .el-button--small, .el-button--small.is-round {
     padding: 0px;
   }
-  .zimus{
+  .all-tip{
+    position: absolute;
+    font-size: 12px;
+    color: rgb(94, 92, 92);
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    padding-top: 1px;
+    background: white;
+    border-radius: 2px;
+    margin-left: -7px;
+    margin-top: 10px;
+    box-shadow: 0 0 2px rgb(155, 154, 154);
+   
+    .arrow{
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-left: 1px solid rgb(233, 231, 231);
+      border-bottom: 1px solid rgb(233, 231, 231);
+      position: absolute;
+      left: -5px;
+      top:5px;
+      transform:rotate(45deg)
+    }
+  }
+  .all-edit{
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      margin-top: 8px;
+      margin-left: -45px;
+      background: rgb(110, 171, 241);
+      border-radius: 2px;
+      cursor: pointer; 
+      text-align: center;
+      line-height: 30px; 
+      .el-icon-sort{
+      transform:rotate(90deg);
+      color: white;
+      font-size: 17px;
+      }
+  }
+  .zhimus{
+    margin-left:-45px;
+    position: absolute;
+    height: 80px;
+    width: 25px;
+    margin-top: 170px;
+    background:#ececec;
+    cursor: pointer;
+  }
+  .suis{
     position: relative;
     margin-left:-63px;
-    margin-top: 35px;
+    margin-top: 39px;
     width: 25px;
     height: 125px;
     left: 18px;
     background:#ececec;
     cursor: pointer;
   } 
+  
   .wateredit{
-    margin-top: 35px;
+    margin-top: 39px;
     width:150px;
     height:125px;
     margin-left: 18px;
@@ -376,7 +407,7 @@ body {
       margin-top: 10px;
       .suiyin_head{
           display: flex;
-          margin-top:10px ;
+          margin-top:6px ;
           .suiyin_set{
               font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
               font-weight: 700;
@@ -386,7 +417,7 @@ body {
       } 
       .suiyin_switch{
           margin-top: 5px;
-          margin-bottom: 15px;
+          margin-bottom: 18px;
         
       }
       label{

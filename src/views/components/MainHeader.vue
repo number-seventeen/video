@@ -50,7 +50,7 @@ export default {
     },
     data(){
         return {
-
+           
         }
     },
     computed:{
@@ -71,12 +71,8 @@ export default {
         taskBtnClickHandler(){
             
         },
+        
         helpClickHandler(){
-            // if(this.isPoster){
-            //     window.open('https://www.yuque.com/loveone/cztdiq/gued70');
-            // }else{
-            //     window.open('https://www.yuque.com/loveone/cztdiq/gqgfrb');
-            // }
             let url = this.$store.state.appStore.config.helpUrl;
             window.open(url);
         }
@@ -90,13 +86,10 @@ export default {
     box-shadow: 0 0 2px rgb(177, 174, 174);
     width: 100%;
     height: 50px;
-    // position: fixed;
-    // top: 0;
     background-color: #ffffff;
     display: flex;
     // justify-content: center;
     align-items: center;
-
     .mh-left{
         padding-left: 20px;
         display: flex;

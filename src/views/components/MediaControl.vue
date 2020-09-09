@@ -120,9 +120,9 @@ export default {
                 var plays=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[1]
                 var backs=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[0]
                 var gos=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[2]
-                document.onkeydown = function(e) {   //按下回车提交
+                document.onkeydown = function(e) { 
                     let key = window.event.keyCode;
-                    //事件中keycode=13为回车事件
+                    
                     if (key == 32&&plays.getAttribute("id")=="pplay") {
                         that.playHandler();
                     }

@@ -1,18 +1,29 @@
 <template>
     <div class="page-edit">
         <MainHeader :hasBack="true"  @backHandler="backHandler" :hasTaskBtn="false" :hasHelpBtn="false">
+            <div class="t-head">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="剪切合并" name="first"></el-tab-pane>
+                    <el-tab-pane label="添加互动索引" name="second"></el-tab-pane>
+                </el-tabs>
+            </div>
             <div class="edit-top-btns">
                 <el-button type="primary" size="small" @click="renderHandler" class="finish" style="width:50px; height:25px;"><span>合成</span></el-button>
             </div>
+            
         </MainHeader>
         <div class="page-content">
             <div class="page-content2">
                 <div class="page-area area2">
-                    <div class="zimus" @click="waterout()">
-                        <div style="width:10px; font-size:12px; margin-left:5px; margin-top:12px;">添加片头片尾</div>
-                       
+                    <div class="all-edit" @mouseover="alledit()"  @mouseout="noalledit()" >
+                      <i class="el-icon-sort"></i>
                     </div>
-                    <div class="wateredit">
+                    <div class="all-tip" v-show="tips"><div class="arrow"></div><span>去完整编辑模式</span></div>
+                    <div class="suis" @click="waterout()">
+                        <div style="width:10px; font-size:12px; margin-left:5px; margin-top:12px;">添加片头片尾</div>   
+                    </div>
+
+                    <div class="wateredit" v-show="waters">
                             <div class="suiyin">
                                 <div class="suiyin_head">
                                     <div class="suiyin_set">添加片头片尾、水印：</div>
@@ -29,24 +40,19 @@
                                 
                             </div>
                     </div>
-                    <div class="view_box">
-                         <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+                    <div class="zhimus" @click="zhimuout()">
+                        <div style="width:10px; font-size:12px; margin-left:5px; margin-top:8px;">添加字幕</div>   
                     </div>
-<!-- 上面是播放器 -->
-                    <!-- <div class="set_box" v-show="tool"> 
-                        <div class="zhimu" v-show="zimuout">
+                    <div class="set_box" v-show="zzhimu">       
+                        <div class="zhimu">
                             <div class="set">
                                 <div class="zhimu_set">字幕设置: <i class="tip el-icon-warning" @mouseover="tipshow()" @mouseout="tiphide()"><div class="tips" v-if="s==true">已选视频中若未包含智能识别和智能翻译数据，则自动忽略，并在列表中标识展示！</div></i> </div>
-                                <div class="zhimu_tool">
-                                    <a href="">智能字幕工具</a>
-                                    <i class="el-icon-arrow-right" style=" margin-left: 5px; font-size: 16px; font-weight: 600;"></i>
-                                </div>
-                                
                             </div>
                             <div class="zhimu_auto">
-                                <el-switch class="switchon" v-model="value" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=70></el-switch>
-                                <label>自动加字幕</label>
-                                <div class="choose" >
+                                <span style="font-size:12px;font-weight:600;">添加默认字幕 </span>
+                                <el-switch class="switchon" v-model="value" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=50></el-switch>
+                                
+                                <!-- <div class="choose" >
                                     <ul>
                                         <el-radio-group v-model="radio" v-if="value==true">
                                             <li><el-radio :label="3">仅显示源语种</el-radio></li>
@@ -54,11 +60,15 @@
                                             <li><el-radio :label="9">源语种+译文同时显示</el-radio></li>
                                         </el-radio-group>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         
-                    </div> -->
+                    </div>
+                    <div class="view_box">
+                         <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+                    </div>
+<!-- 上面是播放器 -->
                 </div>
 <!-- 字幕工具底部 -->
                 <div class="page-area area3">                   
@@ -92,7 +102,7 @@
                                             <div class="info">
                                                 <ul>
                                                     <li>
-                                                        <span>名称:</span><span> 电视剪辑</span>
+                                                        <span>名称:</span><span>{{item.title}}</span>
                                                     </li>
                                                     <li>
                                                         <span>格式:</span><span> MP4</span>
@@ -140,14 +150,7 @@ export default {
     inject:['reload'],
     components:{MainHeader,Playprograss,DialogSelectSource,VideoPlayer,AmTitletailSeting},
     props:{
-        // hasBack:{
-        //     type:Boolean,
-        //     default: false
-        // },
-        // title:{
-        //     type:String,
-        //     default:''
-        // }
+       
     },
     data(){
         return {
@@ -173,18 +176,20 @@ export default {
             signal:"nochange",
             waterurl:Object,
             gozimu:false,
-            curwidth:0,
             selected:0,
             setbox:false,
-            swidth:"",
             vdel:false,
             nu:0,
+            nums:0,
             vstart:"",
             vtimes:0,
             vvtimes:"",
-            tool:false,
-            waters:true,
-            zimuout:false
+            zzhimu:false,
+            waters:false,
+            titie:"",
+            activeName: 'first',
+            tips:false,
+            znum:0,
    
         }
     },
@@ -231,12 +236,14 @@ export default {
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
         this.curSelects = this.$store.state.appStore.curSelects;
+        console.log(this.curSelects)
         // this.vstart=this.curSelects[0].preUrl
         for (this.selected = 0; this.selected < this.curSelects.length; this.selected++) {
              this.videolist=this.curSelects[this.selected].preUrl
              this.times=this.curSelects[this.selected].duration
              this.vvtimes=this.secTotime(this.times/1000) 
-             this.items.push({url:this.videolist,id:this.selected,dur:this.vvtimes})
+             this.titie=this.curSelects[this.selected].title
+             this.items.push({url:this.videolist,id:this.selected,dur:this.vvtimes,title:this.titie})
                     
         }
         
@@ -287,7 +294,9 @@ export default {
             }
             return t
         },
-
+        handleClick(tab, event) {
+            console.log(tab, event);
+        },
         renderHandler(){
             console.log('合成窗口')
         },
@@ -302,6 +311,12 @@ export default {
         },
         btiphide(){
             this.st=false;
+        },
+        alledit(){
+            this.tips=true
+        },
+        noalledit(){
+            this.tips=false
         },
         moveCarousel(direction) {
         // Find a more elegant way to express the :style. consider using props to make it truly generic
@@ -337,12 +352,7 @@ export default {
                     
                 }
                 console.log("删除成功")
-                });  
-                
-
-               
-            
-            
+                });      
         },
          bigplay(index){
             var f=document.getElementsByClassName("main")[0]
@@ -480,7 +490,23 @@ export default {
             document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:none;")
         },
         waterout(){
-            this.waters=true
+          this.nums=this.nums+1 
+          if(this.nums%2!=0) {
+              this.waters=true
+          }
+          else{
+              this.waters=false
+          }
+        },
+        zhimuout(){
+          this.znum=this.znum+1
+          console.log(this.znum) 
+          if(this.znum%2!=0) {
+              this.zzhimu=true
+          }
+          else{
+              this.zzhimu=false
+          }  
         }
         
 
