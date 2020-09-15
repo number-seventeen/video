@@ -69,7 +69,9 @@
   methods:{
       
       maint(){
+        
         if((this.zimushow==true&&this.simplezimu=="ischange")||(this.zimushow==true&&this.simplezimu=="nochange")){
+          console.log("hao")
           this.mas=this.mas
           this.ti=this.mas
           this.i=Math.round(this.mas/2)
@@ -79,6 +81,7 @@
           }
           else if(this.ti>=(2*this.i)&&this.ti<=(4*this.i)&&this.i!=0){
             this.w=this.words[this.i].word 
+           
             
                 
           }

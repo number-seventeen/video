@@ -78,9 +78,9 @@ export default {
 html,body{
 	width: 100%;
 	height: 100%;
-	background: #ececec;
+	background: white;
 	
-
+	
 }
 
 *{
@@ -106,14 +106,14 @@ html,body{
     background-color:#eaeaea;
 }
 ::-webkit-scrollbar {
-    width:8px;
-    height:8px;
+    width:0px;
+    height:0px;
 }
 ::-webkit-scrollbar-thumb {
     background-color:#acacac;
     background-clip:padding-box;
     min-height:28px;
-    border-radius: 3px;
+    border-radius: 1px;
 }
 </style>
 <style lang="scss">
@@ -134,6 +134,8 @@ html,body{
 	min-width: 1365px;
 	margin-left: auto;
 	margin-right: auto;
+	
+
 }
 
 .switchon .el-switch__core{

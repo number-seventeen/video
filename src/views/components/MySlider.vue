@@ -55,8 +55,10 @@ export default {
             self.isMouseDown = true;
             let mouseX = this.$el.getBoundingClientRect().left;//event.clientX;
             let rootW = this.$el.offsetWidth;
+            console.log("e",event)
             let recordX = event.clientX;
             let record = this.currentTime;
+           
             document.addEventListener("mousemove",bodymousemove);
             document.addEventListener("mouseup",bodymouseup);
 
@@ -66,9 +68,8 @@ export default {
             function bodymousemove(event){
                 event.preventDefault();
                 event.stopPropagation();
-
+               
                 let willX = event.clientX-mouseX;//+recodeX;
-                
                 self.sliderValue = Math.min(1,Math.max(0,willX/rootW));
                 self.$emit('value_change',self.sliderValue)
             }

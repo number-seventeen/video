@@ -1,10 +1,5 @@
 <template>
     <div class="page-edit">
-        <div class="full">
-           <div class="v_box">
-                <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
-            </div>  
-        </div>
         <MainHeader :hasBack="true"  @backHandler="backHandler" :hasTaskBtn="false" :hasHelpBtn="false">
             <!-- <div class="t-head" >
                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -20,9 +15,14 @@
         <div class="page-content">
             <div class="page-content2">
                 <div class="page-area area2">
-                    <div class="view_box">
-                         <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" />
+                    <div class="fullback" v-show="fulls">
+                        
                     </div>
+                   
+                    <div class="view_box" >
+                        <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :mainshow="mainshow" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" @gotfull="gotfulls"/>
+                    </div>
+                   
 <!-- 上面是播放器 -->
                     <div class="set_box"> 
                         <div class="zhimu">
@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                             <div class="zhimu_auto">
-                                <el-switch class="switchon" v-model="value" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=60></el-switch>
+                                <el-switch class="switchon" v-model="value" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=55></el-switch>
                                 <label>自动加字幕</label>
                                 <div class="choose" >
                                     <ul>
@@ -53,7 +53,7 @@
                                 <i class="set_icon el-icon-s-tools" @click="titleset"></i>
                             </div>
                             <div class="suiyin_switch">
-                                <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=60></el-switch>
+                                <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=55></el-switch>
                                 <label>自动加片头片尾水印</label>
                     
                             </div>
@@ -78,30 +78,37 @@
                                 
                             </div>
                         </div>
-                        <div class="card-carousel-wrapper">
+                        <div class="card-carousel-wrapper" @mousewheel="mouse($event)"  @mouseenter="nopagescrolls()"  @mouseleave="pagescrolls()">
                         <el-button type="primary" icon="el-icon-arrow-left" @click="moveCarousel(-1)" :disabled="atHeadOfList" class="arrow-left" id="arrow-left" style="color:gray;background-color:white;border-color:white; width:30px; height:30px; font-size:25px; font-weight:700;"></el-button>
                         <div class="card-carousel">
                             <div class="card-carousel--overflow-container">
                                 <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
-                                    <div class="card-carousel--card" :class="{'vcurrent':nu==index}" v-for="(item,index) in items" :key="index" @click="bigplay(index)"  @mouseover="set_show(index)" @mouseout="move_show(index)" >
+                                    <div class="card-carousel--card" :class="{'vcurrent':nu==index}" v-for="(item,index) in items" :key="index" @click="bigplay(index)"  @mouseover="set_show(index)" @mouseout="move_show(index)" @mouseenter="sen($event,index)">
                                         <div class="v_del" v-show="vdel">
                                             <i class="el-icon-delete" @click="del(index)"></i>
                                         </div>
                                         <div class="biaohao">{{item.id+1}}</div>
                                         <div class="vtimes">{{item.dur}}</div>
-                                        <div class="vinfo"  v-show="vdel">
-                                            <div class="info">
-                                                <ul>
-                                                    <li>
-                                                        <span>名称:</span><span>{{item.title}}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>格式:</span><span> MP4</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>时长:</span><span>{{item.dur}}</span>
-                                                    </li>
-                                                </ul>
+                                        <div class="vvvv" style="">
+                                            <div class="vinfo"  v-show="vdel" >
+                                                <div class="info">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="pname">
+                                                                <div class="zname">名称:</div>
+                                                                <div class="inames">
+                                                                    <div>{{item.title}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div><span>格式:</span><span> MP4</span></div>
+                                                        </li>
+                                                        <li>
+                                                            <div><span>时长:</span><span>{{item.dur}}</span></div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                         <video v-bind:src="item.url"  class="choosen" style="width: 185px;height: 130px; object-fit:fill; border-radius: 4px;"></video>
@@ -125,7 +132,7 @@
 
         <DialogSelectSource ref="dialogSelectSource" />
         <AmTitletailSeting ref="titleTailSet"/>
-        <!-- <Pagewater ref="page" :videourl="pages" :setbox="setbox" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" /> -->
+        
     </div>
 </template>
 
@@ -171,6 +178,7 @@ export default {
             gozimu:false,
             selected:0,
             setbox:false,
+            mainshow:false,
             vdel:false,
             nu:0,
             nums:0,
@@ -183,12 +191,30 @@ export default {
             activeName: 'first',
             tips:false,
             znum:0,
-            pages:""
+            pages:"",
+            fulls:false,
+            mouses:false,
+            timer:"",
+            
            
    
         }
     },
     watch:{
+        mouses:{
+            immediate:true,
+            handler:function(){
+                if (this.mouses==false) {
+                    this.Move()
+                    
+                }
+                else if(this.mouses==true){
+                    this.stopMove()
+                    
+                }
+                     
+            }
+        },
         values: {
             immediate:true,
             handler:function(){
@@ -227,6 +253,9 @@ export default {
         return this.currentOffset === 0;
         },
     },
+    beforeDestroy() {
+      clearTimeout(this.timer);
+    },
     mounted(){
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
@@ -243,12 +272,13 @@ export default {
                     
         }
         if(this.curSelects.length>0){
-            console.log(this.curSelects[0].width)
             if(parseInt(this.curSelects[0].width)>1080){
                 this.setbox=false
+                this.mainshow=false
             }
             else if(parseInt(this.curSelects[0].width)<=1080){
                 this.setbox=true
+                this.mainshow=true
             }
             this.vstart=this.items[0].url
         }
@@ -317,6 +347,32 @@ export default {
         noalledit(){
             this.tips=false
         },
+        mouse(es){
+            if(es.deltaY<0){
+                this.moveCarousel(1)
+                
+            }
+            else if(es.deltaY>0){
+                this.moveCarousel(-1)
+                
+            }
+        },
+        pagescrolls(){
+            this.mouses=false
+        },
+        nopagescrolls(){
+            this.mouses=true
+        },
+        Move(){
+            let m =function(e){e.preventDefault();};
+            document.body.style.overflow='';//出现滚动条
+            document.removeEventListener("touchmove",m,{ passive:true });
+        },
+        stopMove(){
+            let m = function(e){e.preventDefault();};
+            document.body.style.overflow='hidden';
+            document.addEventListener("touchmove",m,{ passive:false });//禁止页面滑动
+        },
         moveCarousel(direction) {
         // Find a more elegant way to express the :style. consider using props to make it truly generic
             if (direction === 1 && !this.atEndOfList) {
@@ -359,14 +415,16 @@ export default {
             f.setAttribute("src",u) 
             this.nu=index
             if(this.curSelects.length>0){
-                 console.log(this.curSelects[index].width)
                 if(parseInt(this.curSelects[index].width)>1080 ){
                     this.setbox=false
+                    this.mainshow=false
                 }
                 else if(parseInt(this.curSelects[index].width)<=1080){
                    
                     this.setbox=true
+                    this.mainshow=true
                 }
+                
                 
             }
             if (this.values==true) {
@@ -391,64 +449,73 @@ export default {
         },
         titleset(){ 
             this.$refs.titleTailSet.show({canEdit:this.isAdministrator},(data)=>{  
-                this.waterurl=JSON.parse(data.templateData)
-                this.tlListTT.isSelected==true
-                if(this.waterurl.TitleTail.length==1&&(this.curSelects.length>0)){
-                    //  this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
-                    //  this.waterposx=this.waterurl.TitleTail[0].Pos.x
-                    //  this.waterposy=this.waterurl.TitleTail[0].Pos.y
-                    //  this.waterposw=this.waterurl.TitleTail[0].Pos.width
-                    //  this.waterposh=this.waterurl.TitleTail[0].Pos.height
-                    //  this.wimg=true
-                    if(this.setbox==false){
-                        this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
-                        this.waterposx=this.waterurl.TitleTail[0].Pos.x
-                        this.waterposy=this.waterurl.TitleTail[0].Pos.y
-                        this.waterposw=this.waterurl.TitleTail[0].Pos.width
-                        this.waterposh=this.waterurl.TitleTail[0].Pos.height
-                        this.wimg=true 
-                    } 
-                    if(this.setbox==true){
-                        this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
-                        this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.14
-                        this.waterposy=this.waterurl.TitleTail[0].Pos.y+0.01
-                        this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.2
-                        this.waterposh=this.waterurl.TitleTail[0].Pos.height-0.02
-                        this.wimg=true 
+                    this.waterurl=JSON.parse(data.templateData)
+                    this.tlListTT.isSelected==true
+                    console.log("title",this.waterurl.TitleTail)
+                    if(this.waterurl.TitleTail.length==1&&(this.curSelects.length>0)){
+                        //  this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                        //  this.waterposx=this.waterurl.TitleTail[0].Pos.x
+                        //  this.waterposy=this.waterurl.TitleTail[0].Pos.y
+                        //  this.waterposw=this.waterurl.TitleTail[0].Pos.width
+                        //  this.waterposh=this.waterurl.TitleTail[0].Pos.height
+                        //  this.wimg=true
+                        if(this.mainshow==false){
+                            this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                            this.waterposx=this.waterurl.TitleTail[0].Pos.x
+                            this.waterposy=this.waterurl.TitleTail[0].Pos.y
+                            this.waterposw=this.waterurl.TitleTail[0].Pos.width
+                            this.waterposh=this.waterurl.TitleTail[0].Pos.height
+                            this.wimg=true 
+                        } 
+                        if(this.mainshow==true){
+                            this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
+                            this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.14
+                            this.waterposy=this.waterurl.TitleTail[0].Pos.y+0.01
+                            this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.2
+                            this.waterposh=this.waterurl.TitleTail[0].Pos.height-0.02
+                            this.wimg=true 
+                        }
+                        
+                    }else if(this.waterurl.TitleTail.length==3&&(this.curSelects.length>0)){
+                        this.headvideo=this.waterurl.TitleTail[0].PreviewUrl
+                        this.tailvideo=this.waterurl.TitleTail[1].PreviewUrl
+                        document.getElementsByClassName("nochange")[0].setAttribute("class","ischange")
+                        this.signal=document.getElementsByClassName("ischange")[0].getAttribute("class")
+                        if(parseInt(this.waterurl.TitleTail[0].Width)>=1280 ){
+                            this.setbox=false
+                        }
+                        else if(parseInt(this.waterurl.TitleTail[0].Width)<=1280){
+                            this.setbox=true
+                        }
+                    
+                        if(this.mainshow==false){
+                            this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
+                            this.waterposx=this.waterurl.TitleTail[2].Pos.x
+                            this.waterposy=this.waterurl.TitleTail[2].Pos.y
+                            this.waterposw=this.waterurl.TitleTail[2].Pos.width
+                            this.waterposh=this.waterurl.TitleTail[2].Pos.height
+                            this.wimg=true 
+                        } 
+                        if(this.mainshow==true){
+                            this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
+                            this.waterposx=this.waterurl.TitleTail[2].Pos.x-0.07
+                            this.waterposy=this.waterurl.TitleTail[2].Pos.y
+                            this.waterposw=this.waterurl.TitleTail[2].Pos.width-0.23
+                            this.waterposh=this.waterurl.TitleTail[2].Pos.height
+                            this.wimg=true 
+                        }     
+                                
+                                
                     }
-                     
-                }else if(this.waterurl.TitleTail.length==3&&(this.curSelects.length>0)){
-                    this.headvideo=this.waterurl.TitleTail[0].PreviewUrl
-                    this.tailvideo=this.waterurl.TitleTail[1].PreviewUrl
-                    document.getElementsByClassName("nochange")[0].setAttribute("class","ischange")
-                    this.signal=document.getElementsByClassName("ischange")[0].getAttribute("class")
-                    if(this.setbox==false){
-                        this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
-                        this.waterposx=this.waterurl.TitleTail[2].Pos.x
-                        this.waterposy=this.waterurl.TitleTail[2].Pos.y
-                        this.waterposw=this.waterurl.TitleTail[2].Pos.width
-                        this.waterposh=this.waterurl.TitleTail[2].Pos.height
-                        this.wimg=true 
-                    } 
-                    if(this.setbox==true){
-                        this.waterimg=this.waterurl.TitleTail[2].PreviewUrl
-                        this.waterposx=this.waterurl.TitleTail[2].Pos.x-0.14
-                        this.waterposy=this.waterurl.TitleTail[2].Pos.y+0.01
-                        this.waterposw=this.waterurl.TitleTail[2].Pos.width-0.2
-                        this.waterposh=this.waterurl.TitleTail[2].Pos.height-0.02
-                        this.wimg=true 
-                    }     
-                            
-                             
-                }
                 
             })
             
         },
         addwater(){
-            if(this.tlListTT.isSelected!=true&&this.setbox==false&&(this.curSelects.length>0)){
+            console.log("water",JSON.parse(this.$store.state.appStore.tlListTT[0].templateData))
+            if(this.tlListTT.isSelected!=true&&this.mainshow==false&&(this.curSelects.length>0)){
                 this.tlListTT=this.$store.state.appStore.tlListTT
-                this.waterurl=JSON.parse(this.tlListTT[0].templateData)
+                this.waterurl=JSON.parse(this.tlListTT[2].templateData)
                 this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
                 this.waterposx=this.waterurl.TitleTail[0].Pos.x
                 this.waterposy=this.waterurl.TitleTail[0].Pos.y
@@ -457,14 +524,14 @@ export default {
                 this.wimg=true
                
             }
-            else if(this.tlListTT.isSelected!=true&&this.setbox==true&&(this.curSelects.length>0)){
+            else if(this.tlListTT.isSelected!=true&&this.mainshow==true&&(this.curSelects.length>0)){
                 this.tlListTT=this.$store.state.appStore.tlListTT
-                this.waterurl=JSON.parse(this.tlListTT[4].templateData)
+                this.waterurl=JSON.parse(this.tlListTT[3].templateData)
                 this.waterimg=this.waterurl.TitleTail[0].PreviewUrl
-                this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.15
-                this.waterposy=this.waterurl.TitleTail[0].Pos.y-0.03
-                this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.15
-                this.waterposh=this.waterurl.TitleTail[0].Pos.height+0.01
+                this.waterposx=this.waterurl.TitleTail[0].Pos.x-0.09
+                this.waterposy=this.waterurl.TitleTail[0].Pos.y+0.02
+                this.waterposw=this.waterurl.TitleTail[0].Pos.width-0.23
+                this.waterposh=this.waterurl.TitleTail[0].Pos.height
                 this.wimg=true
                 
             }            
@@ -481,12 +548,44 @@ export default {
         },
         set_show(index){
             document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:block;")
-            document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:block;") 
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:block;")
+            // document.addEventListener("mousemove",bodymousemove);
+            // function bodymousemove(event){
+            //     event.preventDefault();
+            //     event.stopPropagation();
+            //     document.removeEventListener("mousemove",bodymousemove);
+            //     document.removeEventListener("mouseup",bodymouseup);
+                
+            // }
+            
+           
+        },
+       
+        move_show(index){  
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:none;")
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:none;") 
+
+        },
+        sen(e,index){
+            clearTimeout(this.timer)
+            this.timer = setTimeout(this.weizhi(e,index), 2000);
             
         },
-        move_show(index){
-            document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[0].setAttribute("style","display:none;")
-            document.getElementsByClassName("card-carousel--card")[index].getElementsByClassName("vinfo")[0].setAttribute("style","display:none;")
+        weizhi(e,index){
+            
+            var infox=e.offsetX-95
+            var infoy=e.offsetY-40
+            
+            if(e.offsetX<=95){
+                infox=infox+96
+            }
+            if(e.offsetY<=28){
+                infoy=infoy+30
+            }
+           
+            var tx="margin-top:"+infoy.toString()+"px"+";margin-left:"+infox.toString()+"px"+";"
+            document.getElementsByClassName("card-carousel--card")[index].getElementsByTagName("div")[3].setAttribute("style",tx)
+
         },
         waterout(){
           this.nums=this.nums+1 
@@ -506,15 +605,36 @@ export default {
           else{
               this.zzhimu=false
           }  
-        }
+        },
+        gotfulls(f){
+            if(this.fulls==false){
+                this.fulls=f
+                var view=document.getElementsByClassName("view_box")[0]
+                view.setAttribute("style","transform: scale(1.755,1.88);margin-top: -67px;margin-left: -94px;width:826px;height:482px;")
+                document.getElementsByClassName("btn-volume")[0].getElementsByTagName("i")[0].setAttribute("class","el-icon-copy-document")
+                document.getElementsByClassName("media-control")[0].setAttribute("style","transform: scale(0.56,0.552);width:1440px;margin:19px 0 0 -308px; background:white;")
+                document.getElementsByClassName("progress-box")[0].setAttribute("style","width:1168px; margin-right:6px; height:4px;")
+                view.getElementsByTagName("video")[0].setAttribute("style","height:456px;")
+                view.getElementsByTagName("video")[1].setAttribute("style","height:456px;")
+                view.getElementsByTagName("video")[2].setAttribute("style","height:456px;")
+            }
+            else{
+                this.fulls=false
+                var view=document.getElementsByClassName("view_box")[0]
+                view.setAttribute("style","transform: scale(1,1);margin-top: 12px;margin-left: 0px;width:784px;height:475px;")
+                document.getElementsByClassName("btn-volume")[0].getElementsByTagName("i")[0].setAttribute("class","el-icon-full-screen")
+                document.getElementsByClassName("media-control")[0].setAttribute("style","transform: scale(1,1); width:781px;margin:0 0 0 0px;background:white;")
+                document.getElementsByClassName("progress-box")[0].setAttribute("style","width:483px;margin-right:0px; height:3px;")
+                view.getElementsByTagName("video")[0].setAttribute("style","height:430px;")
+                view.getElementsByTagName("video")[1].setAttribute("style","height:430px;")
+                view.getElementsByTagName("video")[2].setAttribute("style","height:430px;")
+            }
+           
+        },
         
-
-            
     }   
 }
 </script>
-
-
 <style lang="scss" scoped src="../../edit.scss">
 
 </style>

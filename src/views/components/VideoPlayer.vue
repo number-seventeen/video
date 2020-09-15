@@ -15,7 +15,7 @@
 
         <!-- 这是主视频盒子 -->
         <div class="media-con-box watermark-box" v-show="two">
-            <div class="setboxs" v-show="this.setbox"></div>
+            <div class="setboxs" v-show="this.mainshow"></div>
             <video ref="mainVideo" class="default-video main "
             :src="videourl"
             @loadedmetadata="loadedmetadataHandler"
@@ -26,8 +26,8 @@
              
             
             <img class="render-img" :src="waterimgs" v-show="wimg" :style="{
-                left:waterposx*100+'%',
-                top:(waterposy-0.12)*100+'%',
+                left:(waterposx-0.01)*100+'%',
+                top:(waterposy-0.08)*100+'%',
                 width:waterposw*100+'%',
                 height:waterposh*100+'%',
             }" />
@@ -53,7 +53,7 @@
             @volume-change="mc_volumeHandler"
             @play="mc_playHandler"
             @pause="mc_pauseHandler"
-            @seek="mc_seekHandler"  :mainbox="mainbox" @gogov="getgogov" @gogoes="getgoes" :all="all"  :pvalue="pvalue" :ptailvalue="ptailvalue" @mainboxtime="getmainbox"/>
+            @seek="mc_seekHandler"  :mainbox="mainbox" @gogov="getgogov" @gogoes="getgoes" :all="all"  :pvalue="pvalue" :ptailvalue="ptailvalue" @mainboxtime="getmainbox" @fullscreen="getfull"/>
     </div>
 </template>
 
@@ -110,6 +110,9 @@ export default {
         },
         setbox:{
             required:true
+        },
+        mainshow:{
+            required:true
         } 
         
 
@@ -145,7 +148,8 @@ export default {
             whichpaly:"",
             currentTime:0,
             mainbox:"",
-            va:0
+            va:0,
+            gfull:false,
           
 
 
@@ -210,6 +214,10 @@ export default {
         getgogov(m){
             this.va=m
             // console.log("nnn",this.va)
+        },
+        getfull(f){
+            this.gfull=f
+            this.$emit("gotfull",this.gfull)
         },
         getgoes(v){
             v=v*1000
@@ -294,7 +302,6 @@ export default {
             }
         },
         seek(v){ 
-            console.log("tv",v)
             if(this.signal=="ischange"){
                 this.headtime=document.getElementsByClassName("head")[0].duration*1000
                 this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
@@ -428,6 +435,7 @@ export default {
             else if(this.signal=="nochange"){
                 this.timeupdateHandler()
                 this.mainbox=this.signal
+                this.simplezimu=this.signal  
             }     
 
         },
@@ -435,14 +443,18 @@ export default {
             this.mas=maincu
         },
         goFullScreen(){
-               var ele = document.getElementsByClassName("main")[0];
-                if (ele.requestFullscreen) {
-                    ele.requestFullscreen();
-                } else if (ele.mozRequestFullScreen) {
-                    ele.mozRequestFullScreen();
-                } else if (ele.webkitRequestFullScreen) {
-                    ele.webkitRequestFullScreen();
-                }
+            //    var ele = document.getElementsByClassName("main")[0];
+            //     if (ele.requestFullscreen) {
+            //         ele.requestFullscreen();
+            //     } else if (ele.mozRequestFullScreen) {
+            //         ele.mozRequestFullScreen();
+            //     } else if (ele.webkitRequestFullScreen) {
+            //         ele.webkitRequestFullScreen();
+            //     }
+        },
+        nofull(){
+            this.$parent.gotfulls()
+            console.log("haode")
         }
 
             

@@ -1,6 +1,5 @@
 <template>
-    <div class="media-control" style="background:white;">
-       
+    <div class="media-control" style="background:white;"> 
         <div class="control-btns">
             <div class="cb-left">
                 <div class="cb-btn btn-back" style="margin-left:8px;" @click="goback()">
@@ -30,7 +29,7 @@
             </div>
             <div class="cb-right">
                 <div class="cb-btn btn-volume">
-                   <i class="el-icon-full-screen"  style="color:#cdcdcd;" @click="FullScreen"></i>
+                   <i class="el-icon-full-screen"  style="color:#cdcdcd;" @click=" clickFullscreen"></i>
                 </div>
             </div>
         </div>
@@ -82,6 +81,7 @@ export default {
             goes:0,
             ttt:0,
             cc:0,
+            enlarge:false
         }
     },
     
@@ -104,10 +104,33 @@ export default {
     },
     mounted:function () {
             this.monitor();
-            
+            let that = this
+			window.onresize = function(){
+				if(!that.checkFull()){
+					// 退出全屏后要执行的动作
+                    var fs=document.getElementsByClassName("btn-volume")[0].getElementsByTagName("i")[0].getAttribute("class")
+                    if(fs=="el-icon-copy-document"){
+                        that.$parent.nofull()
+                    }
+					that.fullscreen = false;
+				}
+			}
             
     },
+    
     methods:{
+        checkFull(){
+            var isFull = document.mozFullScreen||
+            document.fullScreen ||
+            document.webkitIsFullScreen ||
+            document.webkitRequestFullScreen ||
+            document.mozRequestFullScreen ||
+            document.msFullscreenEnabled
+            if(isFull === undefined) {
+            isFull = false
+            }
+            return isFull;
+	    },
         setCurrentTime(v){
             // console.log("vvv", this.progressValue)
             this.currentTime=v
@@ -117,7 +140,7 @@ export default {
             this.progressValue = this.duration == 0?0:(v/this.duration);   
         },
         monitor:function(){
-                var that = this;
+                var that = this;  
                 var plays=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[1]
                 var backs=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[0]
                 var gos=document.getElementsByClassName("cb-left")[0].getElementsByTagName("div")[2]
@@ -218,17 +241,18 @@ export default {
         FullScreen(){
             this.$parent.goFullScreen()
         },
-        // clickFullscreen(){
-        //     this.fulls=true
-        //     if (!screenfull.isEnabled) {
-        //     this.$message({
-        //         message: 'you browser can not work',
-        //         type: 'warning'
-        //     })
-        //     return false
-        //     }
-        //     screenfull.toggle()
-        // }
+        clickFullscreen(){
+            this.enlarge=true
+            this.$emit("fullscreen",this.enlarge)
+            if (!screenfull.isEnabled) {
+            this.$message({
+                message: 'you browser can not work',
+                type: 'warning'
+            })
+            return false
+            }
+            screenfull.toggle()
+        }
         
     }
 }
@@ -239,19 +263,18 @@ export default {
 
 .media-control{
     width: 100%;
-    height: 50px;
+    height: 30px;
     background: white;
     position: absolute;
-    bottom: 0;
+    top: 440px;
+    padding-top: 8px;
     z-index: 5;
     user-select: none;
-
-
+    // transform-origin: top left;
     .control-btns{
         width: 100%;
-        height: calc(100% - 20px);
+        height: calc(100% - 7px);
         position: relative;
-        top:10px;
         // position: absolute;
         // top: 15px;
         display: flex;
@@ -260,7 +283,7 @@ export default {
         .cb-left{
             display: flex;
             align-items: center;
-            padding-left: 5px;
+            padding-left: 2px;
             flex: 1;
             font-size: 14px;
             color: #ffffff;
@@ -270,7 +293,7 @@ export default {
                 left: 15px;
                 top: 15px;
                 z-index: 1;
-                margin-left: 21px;
+                margin-left: 20px;
             }
         }
         .cb-right{

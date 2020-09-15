@@ -99,8 +99,8 @@ export default {
         height: 20px;
 
         .back-btn{
-            width: 25px;
-            height: 25px;
+            width: 28px;
+            height: 28px;
             border: 1px solid #d6d6d6;
             border-radius: 50%;
             align-items: center;
@@ -111,9 +111,12 @@ export default {
             padding-bottom: 2px;
             margin-right: 15px;
             cursor: pointer;
-            display: flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            .el-icon-back{
+                margin-top: 3px;
+            }
         }
     }
 

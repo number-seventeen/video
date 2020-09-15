@@ -7,26 +7,8 @@ a{
 }
 
 .page-edit{
-    width: 1405px;
-    height: 100%;
-    .full{
-      position: absolute;
-      width:1410px;
-      height: 800px;
-      background: pink;
-      z-index: 10;
-      .v_box{
-        width: 1410px;
-        height: 810px;
-        background:white;
-        flex-shrink: 0;
-        margin-right: 43px;
-        margin-top:0;
-        padding: 0;
-        box-shadow: 0 0 8px rgb(189, 189, 189);
-        z-index: 10;    
-      }
-    }
+    width: 1385px;
+    height:810px;
     .main-header{
         background-color: white;
         height: 35px;
@@ -58,14 +40,13 @@ a{
         height:760px;
         margin-top: 15px;
         box-shadow: 0 0 2px rgb(168, 168, 168);
-        
         .page-content2{
             width: 100%;
             height: 760px;
             background-color:white;
             display: flex;
             flex-flow: column;
-            padding: 10px 45px 10px 45px;
+            padding: 10px 45px 10px 55px;
 
             .page-area{
                 width: 100%;
@@ -75,20 +56,27 @@ a{
                 height: 500px;
                 display: flex;
                 .view_box{
-                    width: 781px;
-                    height: 485px;
+                    width: 784px;
+                    height: 475px;
                     background:white;
                     flex-shrink: 0;
+                    margin-left: 12px;
                     margin-right: 43px;
                     padding: 0;
-                    box-shadow: 0 0 8px rgb(189, 189, 189);
-                    margin-top: 12px;    
+                    box-shadow: 0 0 3px rgb(211, 211, 211);
+                    margin-top: 12px; 
+                    z-index: 10;
+                    transition:all 0.4s ease-out;
+                    transform-origin:top left;  
+                        
                 }
                 .set_box{
+                  position: absolute;
+                  margin-left: 850px;
                   width:411px;
-                  height:485px;
+                  height:475px;
                   margin-top: 12px;
-                  box-shadow: 0 0 8px rgb(189, 189, 189);
+                  box-shadow: 0 0 3px rgb(206, 205, 205);
                   flex-shrink: 0;
                   padding:0 35px 0 35px ;
                   background: white;
@@ -195,14 +183,14 @@ body {
     background: white;
     color: #2c3e50;
     font-family: 'Source Sans Pro', sans-serif;
-    padding:0;
-    margin:0;
+    
+
   }
   .card-carousel--overflow-container{
     width: 1275px;
   }
   .bottom_title{
-      width: 1310px;
+      width: 1275px;
       height:40px ;
       display: flex;
       line-height: 40px;
@@ -229,6 +217,7 @@ body {
   }
   .left_title{
     display:flex;
+    margin-left: 12px;
     
   }
   .right_title{
@@ -247,7 +236,7 @@ body {
     justify-content: center;
     color: #666a73;
     width: 1260px;
-    margin-left: 25px;
+    margin-left: 10px;
   }
   
   .card-carousel {
@@ -260,19 +249,20 @@ body {
     
   }
   .card-carousel--overflow-container {
-    overflow-x:hidden;
-    overflow-y:hidden;
+    // overflow-x:hidden;
+    // overflow-y:hidden;
+    overflow: hidden;
   }
-  .card-carousel--overflow-container:hover {
-    overflow-x:scroll;
-    overflow-y:hidden;
-  }
-  .card-carousel--overflow-container::-webkit-scrollbar-thumb{
-    background: rgb(206, 204, 204);
-  }
-  .card-carousel--overflow-container::-webkit-scrollbar-track{
-    background: rgb(224, 224, 224);
-  }
+  // .card-carousel--overflow-container:hover {
+  //   overflow-x:scroll;
+  //   overflow-y:hidden;
+  // }
+  // .card-carousel--overflow-container::-webkit-scrollbar-thumb{
+  //   background: rgb(206, 204, 204);
+  // }
+  // .card-carousel--overflow-container::-webkit-scrollbar-track{
+  //   background: rgb(224, 224, 224);
+  // }
   .card-carousel-cards {
     display: flex;
     transition: transform 150ms ease-out;
@@ -291,9 +281,7 @@ body {
     line-height: 130px;
     
   }
-  .card-carousel--card{
-    height: 130px;
-  }
+  
   .biaohao{
       position: absolute;
       width: 20px;
@@ -321,26 +309,59 @@ body {
     transform:scale(0.9);
     margin-left:7px;
   }
+  .vvvv{
+    position: absolute;
+  }
   .vinfo{
     position: absolute;
-    margin-top: 40px;
-    margin-left: 25px;
-    width: 130px;
-    height: 60px;
+    width: 120px;
+    height: 50px;
     background: gray;
-    opacity: 0.6;
+    opacity: 0.8;
     color: white;
     font-size: 5px;
+    z-index: 7;
+    
+  }
+  .pname{
+    display: flex;
+    width: 270px;
+  }
+  
+  .inames{
+    width: 160px;
+    margin-top: 2px;
+    margin-left: 2px;
+    transform-origin: top left;
+    transform:scale(0.79);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+   
+  }
+  .inames div{
+    
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .info{
-    transform:scale(0.9);
-    margin-top: 5px;
+    width: 180px;
+    margin-left: -15px;
+    margin-top: -1px;
+    transform:scale(0.75);
+    
+  }
+  .pname{
+    font-size: 12px !important;
   }
   .vinfo li{
+    width: 160px;
     margin: 0;
     padding: 0;
   }
   .card-carousel-cards .card-carousel--card {
+    height: 130px;
     margin-right:27px;
     cursor: pointer;
     background-color: #fff;
@@ -361,14 +382,14 @@ body {
         font-weight: 900;
         position: absolute;
         z-index: 6;
-        margin-left: -1305px; 
+        margin-left: -1314px; 
         margin-top: -3px; 
         padding: 2px;   
     }
   .arrow-right{
       font-size: 20px;
       position: absolute;
-      margin-left: 1292px;
+      margin-left: 1295px;
       font-weight: 900;
       padding: 2px;
       margin-top: -3px; 
@@ -401,6 +422,16 @@ body {
   }
   .el-button--small, .el-button--small.is-round {
     padding: 0px;
+  }
+  .fullback{
+    position: absolute;
+    width: 1437px;
+    height: 898px;
+    background:white;
+    margin-top: -60px;
+    margin-left: -82px;
+    z-index: 10;
+    
   }
   
   
