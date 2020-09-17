@@ -106,7 +106,7 @@ html,body{
     background-color:#eaeaea;
 }
 ::-webkit-scrollbar {
-    width:0px;
+    width:3px;
     height:0px;
 }
 ::-webkit-scrollbar-thumb {

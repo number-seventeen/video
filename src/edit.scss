@@ -190,7 +190,7 @@ body {
     width: 1275px;
   }
   .bottom_title{
-      width: 1275px;
+      width: 1271px;
       height:40px ;
       display: flex;
       line-height: 40px;
@@ -419,6 +419,21 @@ body {
     margin-left:5px;
     margin-top: 3px;
     font-weight: 550;
+  }
+  .el-icon-sort{
+    transform: rotate(90deg);
+    margin-left: 5px;
+    margin-bottom: 4px;
+    margin-right: -2px;
+    
+    
+  }
+  .wsort{
+    margin-bottom: 30px;
+    transform: scale(0.75);
+    margin-right: 10px;
+    
+
   }
   .el-button--small, .el-button--small.is-round {
     padding: 0px;

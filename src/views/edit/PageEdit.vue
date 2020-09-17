@@ -55,8 +55,9 @@
                             <div class="suiyin_switch">
                                 <el-switch class="switchon two" v-model="values" active-color="rgba(0, 121, 254, 1)" inactive-color="rgba(204, 204, 204, 1) " :width=55></el-switch>
                                 <label>自动加片头片尾水印</label>
-                    
+                                
                             </div>
+                            <router-link to="/Pagewater">排序</router-link>
                             
                         </div>
                     </div>
@@ -64,7 +65,6 @@
 <!-- 字幕工具底部 -->
                 <div class="page-area area3">                   
                 </div>
-
                 <div class="page-area area4">
                     <div class="bottom_video">
                         <div class="bottom_title">
@@ -72,10 +72,10 @@
                                 <div class="title_one">已选素材</div>
                                 <div class="title_two">(当前已选{{items.length}})</div>
                             </div>
-                            <div class="right_title">
+                            <div class="right_title">                        
                                 <i class="el-icon-plus" @click="addClickHandler" ></i>
                                 <i class="el-icon-delete" id="alldel" @mouseover="btipshow()" @mouseout="btiphide()" @click="alldel()" style="font-weight:200;font-size:19px; color:black; position:relative; right:5px;" ></i>
-                                
+                                <i class="el-icon-sort" ></i><div class="wsort" style="font-size:12px;">调整排序</div>
                             </div>
                         </div>
                         <div class="card-carousel-wrapper" @mousewheel="mouse($event)"  @mouseenter="nopagescrolls()"  @mouseleave="pagescrolls()">
@@ -132,6 +132,7 @@
 
         <DialogSelectSource ref="dialogSelectSource" />
         <AmTitletailSeting ref="titleTailSet"/>
+        
         
     </div>
 </template>

@@ -55,7 +55,6 @@ export default {
             self.isMouseDown = true;
             let mouseX = this.$el.getBoundingClientRect().left;//event.clientX;
             let rootW = this.$el.offsetWidth;
-            console.log("e",event)
             let recordX = event.clientX;
             let record = this.currentTime;
            

@@ -235,12 +235,12 @@ export default {
                     this.three = false;
                     this.$refs.headVideo.currentTime = v/1000;
                 }else if(v>= this.headtime && v < (this.headtime+this.maintime)){
-                    console.log("gogo")
+                    // console.log("gogo")
                     this.one = false;
                     this.two = true;
                     this.three = false;
                     this.$refs.mainVideo.currentTime = (v-this.headtime)/1000;
-                    console.log("main",this.$refs.mainVideo.currentTime)
+                    // console.log("main",this.$refs.mainVideo.currentTime)
                     this.mas=((this.currentTime/1000)-(this.headtime/1000))
                 }else if(v>= (this.headtime+this.maintime) && v<= this.all){
                     this.one = false;
@@ -316,12 +316,12 @@ export default {
                     this.three = false;
                     this.$refs.headVideo.currentTime = v/1000;
                 }else if(v>= this.headtime && v < (this.headtime+this.maintime)){
-                    console.log("gogo")
+                    // console.log("gogo")
                     this.one = false;
                     this.two = true;
                     this.three = false;
                     this.$refs.mainVideo.currentTime = (v-this.headtime)/1000;
-                    console.log("main",this.$refs.mainVideo.currentTime)
+                    // console.log("main",this.$refs.mainVideo.currentTime)
                     this.mas=((this.currentTime/1000)-(this.headtime/1000))
                 }else if(v>= (this.headtime+this.maintime) && v<= this.all){
                     this.one = false;
@@ -454,7 +454,7 @@ export default {
         },
         nofull(){
             this.$parent.gotfulls()
-            console.log("haode")
+           
         }
 
             
