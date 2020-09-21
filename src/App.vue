@@ -106,14 +106,14 @@ html,body{
     background-color:#eaeaea;
 }
 ::-webkit-scrollbar {
-    width:3px;
-    height:0px;
+    width:2px;
+	height:0px;
+	
 }
 ::-webkit-scrollbar-thumb {
-    background-color:#acacac;
+    background-color: rgb(199, 222, 253);
     background-clip:padding-box;
     min-height:28px;
-    border-radius: 1px;
 }
 </style>
 <style lang="scss">

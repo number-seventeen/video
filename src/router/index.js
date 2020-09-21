@@ -5,7 +5,7 @@ import Login from '../views/login/Login.vue';
 import PageSource from '../views/source/PageSource.vue';
 import PageEdit from '../views/edit/PageEdit.vue';
 import Playprograss from '../views/edit/Playprograss.vue'
-import Pagewater from '../views/edit/Pagewater.vue'
+import Sort from '../views/edit/Sort.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,9 +22,9 @@ const routes = [
 		// redirect:'/',
 	},
 	{
-		path: '/Pagewater',
-		name: 'Pagewater',
-		component: Pagewater,
+		path: '/Sort',
+		name: 'Sort',
+		component: Sort,
 		// redirect:'/',
 	},
 	{

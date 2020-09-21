@@ -1,5 +1,7 @@
 <template>
     <div class="page-edit">
+        <div class="meng" v-show="showsorts"></div>
+        <div class="showsort" v-show="showsorts"><Sort ref="sorts" :vsort="vsort" @ssort="getsort" @havesort="gethavesort"/></div>
         <MainHeader :hasBack="true"  @backHandler="backHandler" :hasTaskBtn="false" :hasHelpBtn="false">
             <!-- <div class="t-head" >
                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -57,7 +59,7 @@
                                 <label>自动加片头片尾水印</label>
                                 
                             </div>
-                            <router-link to="/Pagewater">排序</router-link>
+                            <!-- <router-link to="/Sort">排序</router-link> -->
                             
                         </div>
                     </div>
@@ -75,7 +77,7 @@
                             <div class="right_title">                        
                                 <i class="el-icon-plus" @click="addClickHandler" ></i>
                                 <i class="el-icon-delete" id="alldel" @mouseover="btipshow()" @mouseout="btiphide()" @click="alldel()" style="font-weight:200;font-size:19px; color:black; position:relative; right:5px;" ></i>
-                                <i class="el-icon-sort" ></i><div class="wsort" style="font-size:12px;">调整排序</div>
+                                <i class="el-icon-sort" @click="changevsort()"></i><div class="wsort" style="font-size:12px;"></div>
                             </div>
                         </div>
                         <div class="card-carousel-wrapper" @mousewheel="mouse($event)"  @mouseenter="nopagescrolls()"  @mouseleave="pagescrolls()">
@@ -143,13 +145,13 @@ import DialogSelectSource from '../components/DialogSelectSource'
 import {mapState,mapMutations, Store} from 'vuex';
 import global from '@/plugins/global.js';
 import Playprograss from './Playprograss.vue'
-import Pagewater from './Pagewater.vue'
+import Sort from './Sort.vue'
 import VideoPlayer from '../components/VideoPlayer'
 import AmTitletailSeting from '../components/titleTail/AmTitletailSeting'
 
 export default {
     inject:['reload'],
-    components:{MainHeader,Pagewater,Playprograss,DialogSelectSource,VideoPlayer,AmTitletailSeting},
+    components:{MainHeader,Sort,Playprograss,DialogSelectSource,VideoPlayer,AmTitletailSeting},
     props:{
        
     },
@@ -196,6 +198,9 @@ export default {
             fulls:false,
             mouses:false,
             timer:"",
+            vsort:false,
+            showsorts:false,
+            timss:null,
             
            
    
@@ -261,6 +266,7 @@ export default {
         this.$store.dispatch('app_loadTitleTailList',{});
         this.tlListTT=this.$store.state.appStore.tlListTT
         this.curSelects = this.$store.state.appStore.curSelects;
+        console.log(this.curSelects[0].height)
         this.pages=this.curSelects[0].preUrl
         
         // this.vstart=this.curSelects[0].preUrl
@@ -632,6 +638,27 @@ export default {
             }
            
         },
+        changevsort(){
+            this.showsorts=true
+            this.mouses=false
+        },
+        getsort(s){
+            this.showsorts=s
+        },
+        gethavesort(s){
+            this.timss=s
+            for (let x = 0; x < this.curSelects.length; x++) {
+               this.curSelects[x].preUrl=this.timss[x].url
+               this.curSelects[x].title=this.timss[x].title
+               this.curSelects[x].duration=this.timss[x].dd
+               this.curSelects[x].width=this.timss[x].width
+               console.log(this.timss[0].dd)
+               this.reload()  
+               
+            }
+           
+
+        }
         
     }   
 }

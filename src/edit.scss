@@ -65,7 +65,7 @@ a{
                     padding: 0;
                     box-shadow: 0 0 3px rgb(211, 211, 211);
                     margin-top: 12px; 
-                    z-index: 10;
+                    z-index: 9;
                     transition:all 0.4s ease-out;
                     transform-origin:top left;  
                         
@@ -445,8 +445,29 @@ body {
     background:white;
     margin-top: -60px;
     margin-left: -82px;
-    z-index: 10;
+    z-index: 9;
     
+  }
+  .showsort{
+    position: absolute;
+    width: 500px;
+    margin-left: 400px;
+    margin-top: 45px;
+    height: 700px;
+    background: white;
+    box-shadow: 0 0 5px gray;
+    z-index: 10;
+    border-radius: 5px;
+  }
+  .meng{
+    position: absolute;
+    width: 1435px;
+    margin-left: -25px;
+    height: 820px;
+    background:gray;
+    box-shadow: 0 0 5px gray;
+    opacity: 0.45;
+    z-index: 10;
   }
   
   

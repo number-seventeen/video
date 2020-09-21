@@ -1,10 +1,45 @@
+
+.sort_vue{
+    position: absolute;
+    width: 420px;
+    z-index: 10;
+    background: white;
+    margin-left: 40px;
+    margin-top: 15px;
+}
+.sorts{
+    position: absolute;
+    width: 420px;
+    height: 670px;
+    background: white;
+    border-radius:5px;
+
+}
+.sort-title{
+    width: 420px;
+    height: 20px;
+    background: rgba(124, 170, 230, 0.342);
+    box-shadow: 0 0 5px rgba(124, 170, 230, 0.342);
+    border-radius:5px 5px 0px 0 ;
+}
+// .sort-titles{
+//     width: 420px;
+//     height: 15px; 
+//     background:white; 
+//     box-shadow: 0 0 5px gainsboro;
+// }
 .sort-box{
     position: absolute;
-    margin-left:120px;
-    border: 1px solid black;
+    border-top:1px solid rgba(124, 170, 230, 0.342);
+    border-left:1px solid rgba(124, 170, 230, 0.342);
+    border-right:1px solid rgba(124, 170, 230, 0.342);
+    border-bottom:1px solid rgba(124, 170, 230, 0.342);
     width: 420px;
     height: 600px;
-    padding-top: 20px;
+    padding-top: 15px;
+    overflow: hidden;
+}
+.sort-box:hover{
     overflow: scroll;
 }
 .vlists{
@@ -12,7 +47,7 @@
     box-shadow: 0 0 5px gainsboro;
     width: 385px;
     height: 105px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     margin-left: 15px;
 }
 .biaohao{
@@ -33,4 +68,22 @@
 .vchoose{
     box-shadow: 0 0 7px purple;
     
+}
+.changesort{
+    border-bottom:1px solid rgba(124, 170, 230, 0.342);
+    border-left:1px solid rgba(124, 170, 230, 0.342);
+    border-right:1px solid rgba(124, 170, 230, 0.342);
+    position: absolute;
+    width: 420px;
+    height: 50px;
+    display: flex;
+    margin-top: 600px;
+    line-height: 50px;
+    border-radius: 0px 0px 5px 5px;
+}
+.left-button{
+   margin-left: 17px; 
+}
+.right-button{
+    margin-left: 242px; 
 }
