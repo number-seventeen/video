@@ -22,7 +22,7 @@
                     </div>
                    
                     <div class="view_box" >
-                        <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :mainshow="mainshow" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" @gotfull="gotfulls"/>
+                        <VideoPlayer ref="vp" :videourl="vstart" :setbox="setbox" :mainshow="mainshow" :headvideos="headvideo" :tailvideos="tailvideo" :waterimgs="waterimg" :waterposx="waterposx" :waterposy="waterposy" :waterposw="waterposw" :waterposh="waterposh" :wimg="wimg" :signal="signal" :gozimu="gozimu" @gotfull="gotfulls" :plays="plays" @playandpause="getplays"/>
                     </div>
                    
 <!-- 上面是播放器 -->
@@ -201,6 +201,8 @@ export default {
             vsort:false,
             showsorts:false,
             timss:null,
+            plays:false,
+            pauses:true
             
            
    
@@ -421,6 +423,15 @@ export default {
             var u=this.items[index].url
             f.setAttribute("src",u) 
             this.nu=index
+            console.log("sdsds",this.pauses)
+            if(this.pauses==true){
+                this.plays=false
+                this.$refs.vp.changep()
+            }
+            else if(this.pauses==false){
+                 this.plays=false
+                 this.$refs.vp.changep()
+            }
             if(this.curSelects.length>0){
                 if(parseInt(this.curSelects[index].width)>1080 ){
                     this.setbox=false
@@ -658,6 +669,9 @@ export default {
             }
            
 
+        },
+        getplays(p){
+            this.pauses=p
         }
         
     }   

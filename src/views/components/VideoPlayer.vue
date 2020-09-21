@@ -113,9 +113,11 @@ export default {
         },
         mainshow:{
             required:true
-        } 
+        }, 
+        plays:{
+            required:true
+        }
         
-
     },
     data(){
         return {
@@ -150,12 +152,6 @@ export default {
             mainbox:"",
             va:0,
             gfull:false,
-          
-
-
-           
-            
-
             
         }
     },
@@ -183,7 +179,9 @@ export default {
         },
         
     },
-    
+    mounted(){
+        this.$emit("playandpause",this.isPause)
+   },
     created(){
         this.$nextTick(()=>{
             this.video=this.$refs.mainVideo
@@ -196,6 +194,7 @@ export default {
     },
     methods:{
         play(){
+            
             if(this.signal=="ischange"){
                 this.headtime=document.getElementsByClassName("head")[0].duration*1000
                 this.tailtime=document.getElementsByClassName("tail")[0].duration*1000
@@ -204,11 +203,14 @@ export default {
                 if(this.currentTime < this.all-200){
                     clearInterval(this.timer);
                     this.timer = setInterval(this.enterframeHandler,40);
-                    this.isPause = false;    
+                    this.isPause = false;  
+                    this.$emit("playandpause",this.isPause)  
                 }
             }
             else{
-                this.video.play()   
+                this.video.play()  
+                this.isPause=false
+                this.$emit("playandpause",this.isPause)
             }    
         },
         getgogov(m){
@@ -291,6 +293,7 @@ export default {
         pause(){
             clearInterval(this.timer);
             this.isPause = true;
+             this.$emit("playandpause",this.isPause)
             if(!this.$refs.headVideo.paused){
                 this.$refs.headVideo.pause();
             }
@@ -455,6 +458,17 @@ export default {
         nofull(){
             this.$parent.gotfulls()
            
+        },
+        changep(){
+            console.log("ok",this.isPause)
+            console.log("zzzz",this.plays)
+            if(this.plays==false){
+                    this.isPause==true
+                    console.log("hghg",this.isPause)
+                    this.pauseHandler()
+                    
+                   
+            } 
         }
 
             
